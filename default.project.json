@@ -2,7 +2,6 @@
   "name": "VisTools",
   "tree": {
     "$className": "DataModel",
-
     "ReplicatedStorage": {
       "Shared": {
         "$path": "src/shared"
@@ -22,7 +21,11 @@
         }
       }
     },
-
+    "StarterGui": {
+      "GUI": {
+        "$path": "src/gui"
+      }
+    },
     "Workspace": {
       "$properties": {
         "FilteringEnabled": true
