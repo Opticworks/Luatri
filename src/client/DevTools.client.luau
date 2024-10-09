@@ -218,4 +218,12 @@ dtToggleButton("VisTools particle culling","",_G.VisTools_ParticleCulling_output
 dtToggleButton("VisTools interior culling","",_G.VisTools_InteriorCulling_output,dtLeftScrollframe,function() _G.VisTools_InteriorCulling_output = not _G.VisTools_InteriorCulling_output end)
 dtToggleButton("VisTools verbose interior culling","",_G.VisTools_InteriorCulling_verboseOutput,dtLeftScrollframe,function() _G.VisTools_InteriorCulling_verboseOutput = not _G.VisTools_InteriorCulling_verboseOutput end)
 
+
+
+dtShown = true
+toggleDevtoolsVisibility() --[[ Whoops.
+ I have to call this function because I left all of the values to if it was visible.
+ Here is hoping nobody will notice... teehee :3
+]]
+
 _G.GUIControllerLoaded = true
