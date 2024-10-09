@@ -1,8 +1,7 @@
 
-repeat task.wait() until game:IsLoaded()
+repeat task.wait() until _G.convertedGUILoaded
 
 local player = game:GetService("Players").LocalPlayer
-local character = player.Character
 
 local dGUI = player.PlayerGui:WaitForChild("DevUI")
 
@@ -24,11 +23,10 @@ local tKonamiCode = {
 	Enum.KeyCode.B, Enum.KeyCode.A
 }; local konamiIndex = 1
 
-local toolButtons = {} 
 outputSample.Parent = nil
 
 function tween(inst,tsi,propTable) 
-	game:GetService("TweenService"):Create(inst,tsi,propTable):Play() 
+	game:GetService("TweenService"):Create(inst,tsi,propTable):Play()
 end
 
 
@@ -199,7 +197,6 @@ dtPopoutButton.MouseButton1Up:Connect(function()
 	toggleDevtoolsVisibility()
 end)
 
--- debugging stuff
 
 _G.DEV_MODE = false
 
@@ -207,7 +204,6 @@ game:GetService("UserInputService").InputBegan:Connect(function(key) -- TODO - d
 	konamiCode(key)
 end)
 
---
 
 dtDivider("VISTOOLS",dtLeftScrollframe)
 
