@@ -217,11 +217,9 @@ dtDivider("VISTOOLS",dtLeftScrollframe)
 
 dtToggleButton("Particle Culling","",_G.VisTools_ParticleCulling,dtLeftScrollframe,function() _G.VisTools_ParticleCulling = not _G.VisTools_ParticleCulling end)
 dtToggleButton("Interior Culling","",_G.VisTools_InteriorCulling,dtLeftScrollframe,function() _G.VisTools_InteriorCulling = not _G.VisTools_InteriorCulling end)
-dtToggleButton("Tree Impostors","",_G.VisTools_TreeImpostors,dtLeftScrollframe,function() _G.VisTools_TreeImpostors = not _G.VisTools_TreeImpostors end)
 
 dtDivider("DEBUG OUTPUTS",dtLeftScrollframe)
 
-dtToggleButton("VisTools tree impostors","",_G.VisTools_TreeImpostors_output,dtLeftScrollframe,function() _G.VisTools_TreeImpostors_output = not _G.VisTools_TreeImpostors_output end)
 dtToggleButton("VisTools particle culling","",_G.VisTools_ParticleCulling_output,dtLeftScrollframe,function() _G.VisTools_ParticleCulling_output = not _G.VisTools_ParticleCulling_output end)
 dtToggleButton("VisTools interior culling","",_G.VisTools_InteriorCulling_output,dtLeftScrollframe,function() _G.VisTools_InteriorCulling_output = not _G.VisTools_InteriorCulling_output end)
 dtToggleButton("VisTools verbose interior culling","",_G.VisTools_InteriorCulling_verboseOutput,dtLeftScrollframe,function() _G.VisTools_InteriorCulling_verboseOutput = not _G.VisTools_InteriorCulling_verboseOutput end)
