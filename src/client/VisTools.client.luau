@@ -6,20 +6,26 @@ _G.VisTools_TreeImpostors_output = false
 _G.VisTools_InteriorCulling_output = false
 _G.VisTools_ParticleCulling_output = false
 
--- Configuration
+-- TODO: Put these convars sonewhere easier where they can be reached faster or etc (just general user-friendliness)
 
-local PARTICLE_THRESHOLD_DISTANCE = 300
-local TREE_THRESHOLD_DISTANCE = 550
-local TREE_CHECK_INTERVAL = 0.1
-local TREE_BATCH_SIZE = 15
-
+_G.PARTICLE_THRESHOLD_DISTANCE = 300
+_G.TREE_THRESHOLD_DISTANCE = 550
+_G.TREE_CHECK_INTERVAL = 0.1
+_G.TREE_BATCH_SIZE = 15
 
 local camera = game:GetService("Workspace").CurrentCamera
+
+-- TODO - put all of these modules in their respective ModuleScripts
 
 local particleEmitters = {} -- {emitter = ParticleEmitter, initialEnabled = bool}
 
 local function collectParticleEmitters()
-	for _, descendant in pairs(workspace:GetDescendants()) do
+	for _, descendant in pairs(workspace:GetDescendants()) do --[[ QUICK THING...
+		  :GetDescendants() assumes that the game doesn't have StreamingEnabled.
+		  Calling this function, as well as many others, with StreamingEnabled,
+		  will FUCK everything up, and that's a guarantee. 
+		  TODO - UNFUCK!!!
+		]]
 		if descendant:IsA("ParticleEmitter") and descendant.Parent:IsA("BasePart") then
 			table.insert(particleEmitters, {
 				emitter = descendant,
@@ -67,7 +73,7 @@ local function updateParticleEmitters()
 			local particleEmitter = data.emitter
 			local basePart = particleEmitter.Parent
 			local distance = (basePart.CFrame.Position - camera.CFrame.Position).Magnitude
-			particleEmitter.Enabled = distance < PARTICLE_THRESHOLD_DISTANCE
+			particleEmitter.Enabled = distance < _G.PARTICLE_THRESHOLD_DISTANCE
 		end
 	else
 		for _, data in pairs(particleEmitters) do
@@ -79,7 +85,7 @@ end
 workspace.DescendantAdded:Connect(handleNewDescendant)
 
 collectParticleEmitters()
-coroutine.wrap(function()
+coroutine.wrap(function() -- how do i do this better
 	while task.wait(0.1) do
 		cleanUpEmitters()
 		updateParticleEmitters()
