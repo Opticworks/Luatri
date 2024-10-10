@@ -25,11 +25,10 @@ function tween(inst,tsi,propTable)
 end
 
 function _G.out(message:string,timeout)
+	if not timeout then timeout = 5 end -- trying differently gave me some computer magic error
 	coroutine.wrap(function()
 		print(message)
 		local output = outputSample:Clone()
-		if not timeout then timeout = 5 end
-		output.Text = message
 		output.Parent = outputframe
 		tween(output,tsi.expo02out,{BackgroundColor3 = Color3.fromRGB(0,0,0)})
 		task.wait(timeout)
