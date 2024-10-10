@@ -23,7 +23,7 @@ local function collectParticleEmitters()
 	for _, descendant in pairs(workspace:GetDescendants()) do --[[ QUICK THING...
 		  :GetDescendants() assumes that the game doesn't have StreamingEnabled.
 		  Calling this function, as well as many others, with StreamingEnabled,
-		  will FUCK everything up, and that's a guarantee. 
+		  will FUCK everything up, and that's a guarantee.
 		  TODO - UNFUCK!!!
 		]]
 		if descendant:IsA("ParticleEmitter") and descendant.Parent:IsA("BasePart") then
