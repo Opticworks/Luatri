@@ -1,33 +1,28 @@
 repeat task.wait() until _G.convertedGUILoaded
 
 local player = game:GetService("Players").LocalPlayer
-
 local dGUI = player.PlayerGui:WaitForChild("DevUI")
 
 local outputframe = dGUI.ScreenSizeFrame.Output
 local outputSample = outputframe.OutputSample
 
 local tsi = {
-	expo1out = TweenInfo.new(1,Enum.EasingStyle.Exponential,Enum.EasingDirection.Out),
+	expo1out  = TweenInfo.new(1,  Enum.EasingStyle.Exponential,Enum.EasingDirection.Out),
 	expo02out = TweenInfo.new(0.2,Enum.EasingStyle.Exponential,Enum.EasingDirection.Out),
 	expo05out = TweenInfo.new(0.5,Enum.EasingStyle.Exponential,Enum.EasingDirection.Out),
 	back05out = TweenInfo.new(0.5,Enum.EasingStyle.Back,Enum.EasingDirection.Out)
 }
 
-local tKonamiCode = {
-	Enum.KeyCode.Up, Enum.KeyCode.Up,
-	Enum.KeyCode.Down, Enum.KeyCode.Down,
-	Enum.KeyCode.Left, Enum.KeyCode.Right,
-	Enum.KeyCode.Left, Enum.KeyCode.Right,
-	Enum.KeyCode.B, Enum.KeyCode.A
-}; local konamiIndex = 1
 
 outputSample.Parent = nil
 
-function tween(inst,tsi,propTable) 
-	game:GetService("TweenService"):Create(inst,tsi,propTable):Play()
+function tween(inst,tsi,propTable)
+	game:GetService("TweenService"):Create(inst,tsi,propTable):Play() --[[
+     I made this function just so that stuff would look nicer. 
+	 It's also a lot easier to just type 5 letters than ts:create(whatever,whatever,whatever):Play().
+	 Yes I'm lazy.
+	]]
 end
-
 
 function _G.out(message:string,timeout)
 	coroutine.wrap(function()
@@ -44,18 +39,33 @@ function _G.out(message:string,timeout)
 	end)()
 end
 
+function devmode(state: boolean)
+	if state ~= DEV_MODE then
+		dGUI.Enabled = state
+		DEV_MODE = state
+		_G.out("DEV_MODE: " .. tostring(state))
+	end
+end
+
+
+--[[ Konami Code
+	Don't want the Konami Code? Do you prefer adding your own function that toggles this on or off?
+	Just comment out this whole thing, and use devmode(true) or devmode(false) the way you want to, to toggle the UI visibility.
+]]
+
+local tKonamiCode = {
+	Enum.KeyCode.Up, Enum.KeyCode.Up,
+	Enum.KeyCode.Down, Enum.KeyCode.Down,
+	Enum.KeyCode.Left, Enum.KeyCode.Right,
+	Enum.KeyCode.Left, Enum.KeyCode.Right,
+	Enum.KeyCode.B, Enum.KeyCode.A
+}; local konamiIndex = 1
+
 local function konamiCode(input)
 	if input.KeyCode == tKonamiCode[konamiIndex] then
 		konamiIndex = konamiIndex + 1
 		if konamiIndex > #tKonamiCode then
-			if not _G.DEV_MODE then
-				_G.out("DEV_MODE: true")
-				_G.DEV_MODE = true
-				dGUI.Enabled = true
-			else 
-				_G.DEV_MODE = false
-				dGUI.Enabled = false
-			end
+			devmode((not DEV_MODE))
 			konamiIndex = 1
 		end
 	else
@@ -63,10 +73,12 @@ local function konamiCode(input)
 	end
 end
 
+
 -- DevTools
 
-local dtFrame = dGUI.ScreenSizeFrame.Devtools
 local dtShown = false
+
+local dtFrame = dGUI.ScreenSizeFrame.Devtools
 local dtContainer = dtFrame.Container
 local dtLeftScrollframe = dtContainer.leftScroller
 local dtRightScrollframe = dtContainer.rightScroller
@@ -75,6 +87,7 @@ local dtToggleButtonTemplate = dtLeftScrollframe.toggleButtonContainer
 local dtMomentaryButtonTemplate = dtLeftScrollframe.momentaryButtonContainer
 local dtDividerTemplate = dtLeftScrollframe.CatDivider
 local dtCloseButton = dtFrame.Titlebar.Close
+local dtPopoutButton = dGUI.ScreenSizeFrame.DevtoolsButton
 
 dtToggleButtonTemplate.Parent = nil
 dtMomentaryButtonTemplate.Parent = nil
@@ -152,20 +165,17 @@ function toggleDevtoolsVisibility()
 		dtShown = true
 		tween(dtFrame,tsi.back05out,{Size = UDim2.fromScale(0.6,0.6),GroupTransparency = 0})
 		tween(dtFrame.UIStroke,tsi.expo02out,{Transparency = 0})
-		dtLeftScrollframe.Visible = true
-		dtRightScrollframe.Visible = true
-		dtCloseButton.Visible = true
+
 	else
 		dtShown = false
-		dtCloseButton.Visible = false
-		dtLeftScrollframe.Visible = false
-		dtRightScrollframe.Visible = false
 		tween(dtFrame,tsi.expo05out,{Size = UDim2.fromScale(0.59,0.59),GroupTransparency = 1})
 		tween(dtFrame.UIStroke,tsi.expo02out,{Transparency = 1})
 	end
+	dtLeftScrollframe.Visible = dtShown
+	dtRightScrollframe.Visible = dtShown
+	dtCloseButton.Visible = dtShown
+	dtRightScrollframe.Visible = dtShown
 end
-
-local dtPopoutButton = dGUI.ScreenSizeFrame.DevtoolsButton
 
 dtPopoutButton.MouseEnter:Connect(function()
 	tween(dtPopoutButton,tsi.expo05out,{BackgroundTransparency = 0,ImageTransparency = 0})
@@ -216,7 +226,6 @@ dtToggleButton("VisTools tree impostors","",_G.VisTools_TreeImpostors_output,dtL
 dtToggleButton("VisTools particle culling","",_G.VisTools_ParticleCulling_output,dtLeftScrollframe,function() _G.VisTools_ParticleCulling_output = not _G.VisTools_ParticleCulling_output end)
 dtToggleButton("VisTools interior culling","",_G.VisTools_InteriorCulling_output,dtLeftScrollframe,function() _G.VisTools_InteriorCulling_output = not _G.VisTools_InteriorCulling_output end)
 dtToggleButton("VisTools verbose interior culling","",_G.VisTools_InteriorCulling_verboseOutput,dtLeftScrollframe,function() _G.VisTools_InteriorCulling_verboseOutput = not _G.VisTools_InteriorCulling_verboseOutput end)
-
 
 
 dtShown = true
