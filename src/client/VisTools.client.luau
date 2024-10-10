@@ -378,9 +378,6 @@ end)()
 
 task.spawn(checkTrees)
 workspace.DescendantAdded:Connect(handleNewDescendant)
-runService.RenderStepped:Connect(function()
-	updateTransparency()
-end)
 
 _G.out("[OK] VisTools tree impostor loop begun")
 _G.out("[OK] VisTools particle culling begun")
