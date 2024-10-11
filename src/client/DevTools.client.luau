@@ -1,5 +1,7 @@
 repeat task.wait() until _G.convertedGUILoaded
 
+_G.DEV_MODE = false
+
 local player = game:GetService("Players").LocalPlayer
 local dGUI = player.PlayerGui:WaitForChild("DevUI")
 
@@ -18,7 +20,7 @@ outputSample.Parent = nil
 
 function tween(inst,tsi,propTable)
 	game:GetService("TweenService"):Create(inst,tsi,propTable):Play() --[[
-     I made this function just so that stuff would look nicer. 
+     I made this function just so that stuff would look nicer.
 	 It's also a lot easier to just type 5 letters than ts:create(whatever,whatever,whatever):Play().
 	 Yes I'm lazy.
 	]]
@@ -49,7 +51,7 @@ end
 
 --[[ Konami Code
 	Don't want the Konami Code? Do you prefer adding your own function that toggles this on or off?
-	Just comment out this whole thing, and use devmode(true) or devmode(false) the way you want to, to toggle the UI visibility.
+	Just comment out this whole thing, and set devmode(true) or devmode(false) the way you want to, to toggle the UI visibility.
 ]]
 
 local tKonamiCode = {
@@ -72,6 +74,9 @@ local function konamiCode(input)
 	end
 end
 
+game:GetService("UserInputService").InputBegan:Connect(function(key)
+	konamiCode(key)
+end)
 
 -- DevTools
 
@@ -206,11 +211,8 @@ dtPopoutButton.MouseButton1Up:Connect(function()
 end)
 
 
-_G.DEV_MODE = false
 
-game:GetService("UserInputService").InputBegan:Connect(function(key) -- TODO - delete this
-	konamiCode(key)
-end)
+-- YOU CAN APPEND YOUR FUNCTIONS HERE AS YOU WISH
 
 
 dtDivider("VISTOOLS",dtLeftScrollframe)
