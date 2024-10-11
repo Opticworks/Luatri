@@ -17,7 +17,7 @@ local CollectionService = game:GetService("CollectionService")
 -- Configuration
 
 local PARTICLE_CULLING_RANGE = 300
-local TREE_THRESHOLD_DISTANCE = 700
+local TREE_THRESHOLD_DISTANCE = 200
 local TREE_CHECK_INTERVAL = 0.4
 local TREE_BATCH_SIZE = 30
 local TREE_WARNING_MS = 0.1
@@ -78,9 +78,9 @@ local function setupCullBrushRegions()
 			})
 		else
 			if folder then
-				_G.out("<b>[FATAL VISTOOLS INTERIOR CULLING ERROR]</b> Cull brush not found or invalid for folder: " .. folder.Name)
+				_G.out("<b>[VisTools warning]</b> Cull brush not found or invalid for folder: " .. folder.Name)
 			else
-				_G.out("<b>[FATAL VISTOOLS INTERIOR CULLING ERROR]</b> Cull brush not found or invalid for an unknown folder")
+				_G.out("<b>[VisTools warning]</b> Cull brush not found or invalid for an unknown folder")
 			end
 		end
 	end
@@ -111,7 +111,6 @@ local function restoreFolderVisibility(folder)
 end
 
 local function updateCulling()
-	local camPos = camera.CFrame.Position
 	local foldersToCull = {}
 	local foldersToUncull = {}
 	for _, data in pairs(cullRegions) do
@@ -164,152 +163,116 @@ _G.out("[OK] VisTools interior culling begun")
 
 
 -- tree impostors
+-- I stole this code from Cardboard Box Simulator, an example project made by MrChickenRocket
+-- thank you so much for making it open-source :)
 
-local trees = {}
+local RunService = game:GetService("RunService")
 
-local replicatedStorage = game:GetService("ReplicatedStorage").VisTools
-local billboardTemplates = {
-	PineTree = replicatedStorage:WaitForChild("pineBillboard"),
-	OakTree = replicatedStorage:WaitForChild("oakBillboard"),
-	FrozenOakTree = replicatedStorage:WaitForChild("frozenOakBillboard"),
-	CherryBlossom = replicatedStorage:WaitForChild("cherryBillboard")
-}
+local details = {}
+local lastCell = nil
+local pendingUpdate = true
+local updating = false
 
-local function saveOriginalTransparency(model)
-	local originalTransparency = {}
-	for _, part in pairs(model:GetDescendants()) do
-		if part:IsA("BasePart") then
-			originalTransparency[part] = part.Transparency
-		end
-	end
-	return originalTransparency
-end
-
-local function disableTree(tree)
-	local startTime = tick()
-	for _, part in pairs(tree.model:GetDescendants()) do
-		if part:IsA("BasePart") then
-			part.Transparency = 1
-			part.CanCollide = false
-		end
-	end
-	local endTime = tick()
-	if _G.VisTools_TreeImpostors_output then
-		if (endTime - startTime) * 1000 > TREE_WARNING_MS then
-			_G.out('[VisTools tree impostors] Disabled 3D model of a tree, took <font color="#FF7800">' .. (endTime - startTime) * 1000 .. 'ms.</font>')
-		else
-			_G.out("[VisTools tree impostors] Disabled 3D model of a tree, took " .. (endTime - startTime) * 1000 .. "ms")
-		end
-	end
-	tree.impostor.Enabled = true
-end
-
-local function enableTree(tree, originalTransparency)
-	local startTime = tick()
-	for part, transparency in pairs(originalTransparency) do
-		if part:IsA("BasePart") then
-			part.Transparency = transparency
-			part.CanCollide = true
-		end
-	end
-	local endTime = tick()
-	if _G.VisTools_TreeImpostors_output then
-		if (endTime - startTime) * 1000 > TREE_WARNING_MS then
-			_G.out('[VisTools tree impostors] Enabled 3D model of a tree, took <font color="#FF7800">' .. (endTime - startTime) * 1000 .. 'ms.</font>')
-		else
-			_G.out("[VisTools tree impostors] Enabled 3D model of a tree, took " .. (endTime - startTime) * 1000 .. "ms")
-		end
-	end
-	tree.impostor.Enabled = false
-end
-
-local function initializeTree(treeModel, treeName)
-	local impostorTemplate = billboardTemplates[treeName]
-	if impostorTemplate then
-		local impostorBillboard = impostorTemplate:Clone()
-		impostorBillboard.Parent = treeModel
-		impostorBillboard.Enabled = false
-		local originalTransparency = saveOriginalTransparency(treeModel)
-		table.insert(trees, {
-			model = treeModel,
-			impostor = impostorBillboard,
-			is3DVisible = true,
-			originalTransparency = originalTransparency
-		})
-	end
-end
-
-local function isValidTreeName(treeName)
-	return billboardTemplates[treeName] ~= nil -- idk why
-end
-
-local function initializeAllTrees()
-	local treeFolder = workspace:WaitForChild("Trees") -- Assuming the folder is called "Trees"
-
-	for _, tree in pairs(treeFolder:GetChildren()) do
-		if isValidTreeName(tree.Name) then
-			initializeTree(tree, tree.Name) -- Initialize the tree with the correct impostor
-		end
-	end
-end
-
-initializeAllTrees()
-local TREE_DISTANCE_THRESHOLD_SQUARED = TREE_THRESHOLD_DISTANCE * TREE_THRESHOLD_DISTANCE
-
-local function updateTreeLOD(tree, distanceSquared)
-	if distanceSquared < TREE_DISTANCE_THRESHOLD_SQUARED then
-		if not tree.is3DVisible then
-			enableTree(tree, tree.originalTransparency) 
-			tree.is3DVisible = true
-		end
-	else
-		if tree.is3DVisible then
-			disableTree(tree) 
-			tree.is3DVisible = false
-		end
-	end
-end
-
-local function updateTreesBatch(startIndex)
-	local campos = camera.CFrame.Position
-	for i = startIndex, math.min(startIndex + TREE_BATCH_SIZE - 1, #trees) do
-		task.wait(TREE_CHECK_INTERVAL / TREE_BATCH_SIZE)
-		local tree = trees[i]
-		local primaryPart = tree.model:FindFirstChild("Trunk") or tree.model:FindFirstChildWhichIsA("BasePart")
-		if primaryPart then
-			local treePosition = primaryPart.Position
-			local distanceSquared = (campos - treePosition).Magnitude ^ 2
-			updateTreeLOD(tree, distanceSquared)
-		end
-	end
-end
-
-local function checkTrees()
-	local totalTrees = #trees
-	local startIndex = 1
-	while true do
-		local startTime = tick()
-		updateTreesBatch(startIndex)
-		startIndex = startIndex + TREE_BATCH_SIZE
-		if startIndex > totalTrees then
-			startIndex = 1
-		end
-		local endTime = tick()
-		if _G.VisTools_TreeImpostors_batch_output then
-			if (endTime - startTime) * 1000 > TREE_BATCH_WARNING_MS then
-				_G.out('[VisTools tree impostors] <font color="#FF7800">Warning: Tree batch took ' .. (endTime - startTime) * 1000 .. 'ms. </font>')
-			else 
-				_G.out('[VisTools tree impostors] Batch update took ' .. (endTime - startTime) * 1000 ..  'ms.')
-
+function AddDetail(instance)
+	task.spawn(function()
+		local record = {}
+		record.cullDistance = TREE_THRESHOLD_DISTANCE
+		record.instance = instance
+		record.primaryPart = instance
+		record.visible = true
+		record.parent = instance.Parent
+		if (instance:IsA("Folder")) then
+			while true do
+				record.primaryPart = instance:FindFirstChildWhichIsA("BasePart", true)
+				if (record.primaryPart == nil) then
+					wait()
+				else
+					break
+				end
 			end
 		end
-		wait(TREE_CHECK_INTERVAL)
-	end
+		
+		if (instance:IsA("Model")) then
+			while(true) do
+				record.primaryPart = instance.PrimaryPart or instance:FindFirstChildWhichIsA("BasePart", true)
+				if (record.primaryPart == nil) then
+					wait()
+				else
+					break
+				end
+			end
+		end
+		
+		if (record.primaryPart == nil) then
+			_G.out("[temp] Missing PrimaryPart for " .. instance.Name)
+			return
+		end
+			
+		local dist = record.instance:GetAttribute("distance")
+		if (dist ~= nil) then
+			record.cullDistance = dist
+		end
+			
+		details[instance] = record
+	end)
+	
 end
 
-task.spawn(checkTrees)
+function Setup()
+	CollectionService:GetInstanceAddedSignal("Detail_Small"):Connect(function(instance)
+		AddDetail(instance)
+	end)
+	for _,instance in CollectionService:GetTagged("Detail_Small") do
+		AddDetail(instance)
+	end
+end
+Setup()
 
--- Particle culling
+RunService.Heartbeat:Connect(function(dt) --t odo dont nil impsotros
+	local player = game.Players.LocalPlayer
+	local character = player.Character
+	if (character == nil or character.PrimaryPart == nil) then
+		return
+	end
+	local pos = character.PrimaryPart.Position
+	local cellSize = 4
+	local cell = pos // cellSize
+	if (cell ~= lastCell) then
+		lastCell = cell
+		pendingUpdate = true
+	end
+
+	if (pendingUpdate and (not updating)) then
+		updating = true
+		pendingUpdate = false
+		task.spawn(function()
+			local counter = 0
+			for _,record in details do
+				local vec = record.primaryPart.Position - pos
+				local mag = vec.Magnitude
+				if (mag < record.cullDistance and (not record.visible)) then
+					record.instance.Parent = record.parent
+					record.Impostor.Billboard.Enabled = false
+					record.visible = true
+					continue
+				end
+				if (mag >= record.cullDistance and (record.visible)) then
+					record.instance.Parent = nil
+					record.Impostor.Billboard.Enabled = true
+					record.visible = false
+				end
+				counter+=1
+				if (counter > 50) then
+					wait()
+					counter =0
+				end
+			end
+			updating = false
+		end)
+	end
+end)
+
+
 
 local particleEmitters = {} -- {emitter = ParticleEmitter, initialEnabled = bool}
 
