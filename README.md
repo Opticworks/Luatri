@@ -14,3 +14,7 @@ With our VisTools, you can expect to see:
 - With customizable toggle/momentary buttons
 
 Our VisTools is currently very early in the rewriting process but we should see the 0.1.0 package be ready and out by late November :)
+
+## Ok I don't care, where's the docs?
+
+[Here :)](https://opticworks.github.io/)
