@@ -8,7 +8,7 @@ With our VisTools, you can expect to see:
 - Particle culling
 - Tree impostors
 - Distance fading
-- Custom LOD support
+- Support for 4-stage LODs
 - With its own complementary runtime UI called DevTools
 - And its own unobtrusive console log window
 - With customizable toggle/momentary buttons
