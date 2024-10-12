@@ -1,7 +1,7 @@
 --!nocheck
 _G.VisTools_InteriorCulling = true
 _G.VisTools_ParticleCulling = true
-_G.VisTools_TreeImpostors = true 
+_G.VisTools_TreeImpostors = true
 _G.VisTools_TreeImpostors_output = false
 _G.VisTools_TreeImpostors_batch_output = true
 _G.VisTools_InteriorCulling_output = true
@@ -250,15 +250,24 @@ RunService.Heartbeat:Connect(function(dt) --t odo dont nil impsotros
 			for _,record in details do
 				local vec = record.primaryPart.Position - pos
 				local mag = vec.Magnitude
+				local impostor = record.parent.parent:WaitForChild("Impostor")
 				if (mag < record.cullDistance and (not record.visible)) then
 					record.instance.Parent = record.parent
-					record.Impostor.Billboard.Enabled = false
+					if impostor then
+						impostor.Billboard.Enabled = false
+					else
+						warn("impostor not found for a record (attempt to disable)")
+					end
 					record.visible = true
 					continue
 				end
 				if (mag >= record.cullDistance and (record.visible)) then
 					record.instance.Parent = nil
-					record.Impostor.Billboard.Enabled = true
+					if impostor then
+						impostor.Billboard.Enabled = true
+					else
+						warn("impostor not found for a record (attempt to enable)")
+					end
 					record.visible = false
 				end
 				counter+=1
