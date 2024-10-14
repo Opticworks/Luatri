@@ -79,7 +79,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(key,gpe)
 end)
 -- DevTools
 
-local dtShown = false
+local dtShown = true
 
 local dtFrame = dGUI.ScreenSizeFrame.Devtools
 local dtContainer = dtFrame.Container
@@ -180,7 +180,7 @@ function toggleDevtoolsVisibility()
 	dtRightScrollframe.Visible = dtShown
 end
 
-dtPopoutButton.MouseEnter:Connect(function()
+dtPopoutButton.MouseEnter:Connect(function() -- wtf is this
 	tween(dtPopoutButton,tsi.expo05out,{BackgroundTransparency = 0,ImageTransparency = 0})
 end)
 dtPopoutButton.MouseLeave:Connect(function()
@@ -225,11 +225,11 @@ dtToggleButton("VisTools particle culling","",_G.VisTools_ParticleCulling_output
 dtToggleButton("VisTools interior culling","",_G.VisTools_InteriorCulling_output,dtLeftScrollframe,function() _G.VisTools_InteriorCulling_output = not _G.VisTools_InteriorCulling_output end)
 dtToggleButton("VisTools verbose interior culling","",_G.VisTools_InteriorCulling_verboseOutput,dtLeftScrollframe,function() _G.VisTools_InteriorCulling_verboseOutput = not _G.VisTools_InteriorCulling_verboseOutput end)
 
+dtDivider("SAMPLE BUTTONS",dtRightScrollframe)
+dtMomentaryButton("hello", "Add your own buttons in the DevTools script! :)", dtRightScrollframe, function()
+	print("This is a " .. math.random((2^12),(2^48)) .. " byte GOAT file!")
+end)
 
-dtShown = true
-toggleDevtoolsVisibility() --[[ Whoops.
- I have to call this function because I left all of the values to if it was visible.
- Here is hoping nobody will notice... teehee :3
-]]
+toggleDevtoolsVisibility() 
 
 _G.GUIControllerLoaded = true
