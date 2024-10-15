@@ -2,7 +2,10 @@ repeat task.wait() until _G.convertedGUILoaded
 
 local DEV_MODE = false
 
-local player = game:GetService("Players").LocalPlayer
+local players = game:GetService("Players")
+local userInputService = game:GetService("UserInputService")
+local runService = game:GetService("RunService")
+local player = players.LocalPlayer
 local dGUI = player.PlayerGui:WaitForChild("DevUI")
 
 local outputframe = dGUI.ScreenSizeFrame.Output
@@ -19,15 +22,11 @@ local tsi = {
 outputSample.Parent = nil
 
 function tween(inst,tsi,propTable)
-	game:GetService("TweenService"):Create(inst,tsi,propTable):Play() --[[
-     I made this function just so that stuff would look nicer.
-	 It's also a lot easier to just type 5 letters than ts:create(whatever,whatever,whatever):Play().
-	 Yes I'm lazy.
-	]]
+	game:GetService("TweenService"):Create(inst,tsi,propTable):Play() -- dont ask.
 end
 
 function _G.out(message:string,timeout)
-	if not timeout then timeout = 5 end -- trying differently gave me some computer magic error
+	if not timeout then timeout = 5 end
 	coroutine.wrap(function()
 		print(message)
 		local output = outputSample:Clone()
@@ -68,15 +67,17 @@ local function konamiCode(input)
 	end
 end
 
-
-game:GetService("UserInputService").InputBegan:Connect(function(key,gpe)
-	if gpe then
-		konamiCode(key) -- 1532 comment this line out if you dont want konami code
-		if key.KeyCode == Enum.KeyCode.RightControl then
-			devmode(not DEV_MODE)
+if runService:IsStudio() then -- TODO: figure out a way for people to easily put themselves in a devtable or something like that
+	userInputService.InputBegan:Connect(function(key,gpe)
+		if gpe then
+			konamiCode(key) -- 1532 comment this line out if you dont want konami code
+			if key.KeyCode == Enum.KeyCode.RightControl then
+				devmode(not DEV_MODE)
+			end
 		end
-	end
-end)
+	end)
+end
+
 -- DevTools
 
 local dtShown = true
@@ -192,7 +193,6 @@ end)
 dtCloseButton.MouseLeave:Connect(function()
 	tween(dtCloseButton,tsi.expo05out,{BackgroundColor3 = Color3.fromRGB(45,45,45),TextColor3 = Color3.fromRGB(91,91,91)})
 end)
-
 dtCloseButton.MouseButton1Down:Connect(function()
 	tween(dtCloseButton,tsi.expo05out,{Size = UDim2.fromOffset(18,18)})
 end)
@@ -200,7 +200,6 @@ dtCloseButton.MouseButton1Up:Connect(function()
 	tween(dtCloseButton,tsi.back05out,{Size = UDim2.fromOffset(21,21)})
 	toggleDevtoolsVisibility()
 end)
-
 dtPopoutButton.MouseButton1Down:Connect(function()
 	tween(dtPopoutButton,tsi.expo05out,{Size = UDim2.fromOffset(23,23)})
 end)
@@ -226,7 +225,7 @@ dtToggleButton("VisTools interior culling","",_G.VisTools_InteriorCulling_output
 dtToggleButton("VisTools verbose interior culling","",_G.VisTools_InteriorCulling_verboseOutput,dtLeftScrollframe,function() _G.VisTools_InteriorCulling_verboseOutput = not _G.VisTools_InteriorCulling_verboseOutput end)
 
 dtDivider("SAMPLE BUTTONS",dtRightScrollframe)
-dtMomentaryButton("hello", "Add your own buttons in the DevTools script! :)", dtRightScrollframe, function()
+dtMomentaryButton("Hi!", "Add your own buttons in the DevTools script! :)", dtRightScrollframe, function()
 	print("This is a " .. math.random((2^12),(2^48)) .. " byte GOAT file!")
 end)
 
