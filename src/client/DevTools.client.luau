@@ -1,12 +1,17 @@
 repeat task.wait() until _G.convertedGUILoaded
 
-_G.DEV_MODE = false
+local DEV_MODE = false
 
-local player = game:GetService("Players").LocalPlayer
+local players = game:GetService("Players")
+local userInputService = game:GetService("UserInputService")
+local runService = game:GetService("RunService")
+local player = players.LocalPlayer
+
 local dGUI = player.PlayerGui:WaitForChild("DevUI")
 
 local outputframe = dGUI.ScreenSizeFrame.Output
 local outputSample = outputframe.OutputSample
+outputSample.Parent = nil
 
 local tsi = {
 	expo1out  = TweenInfo.new(1,  Enum.EasingStyle.Exponential,Enum.EasingDirection.Out),
@@ -16,18 +21,13 @@ local tsi = {
 }
 
 
-outputSample.Parent = nil
 
 function tween(inst,tsi,propTable)
-	game:GetService("TweenService"):Create(inst,tsi,propTable):Play() --[[
-     I made this function just so that stuff would look nicer.
-	 It's also a lot easier to just type 5 letters than ts:create(whatever,whatever,whatever):Play().
-	 Yes I'm lazy.
-	]]
+	game:GetService("TweenService"):Create(inst,tsi,propTable):Play() -- dont ask.
 end
 
 function _G.out(message:string,timeout)
-	if not timeout then timeout = 5 end -- trying differently gave me some computer magic error
+	if not timeout then timeout = 5 end
 	coroutine.wrap(function()
 		print(message)
 		local output = outputSample:Clone()
@@ -68,6 +68,16 @@ local function konamiCode(input)
 	end
 end
 
+if runService:IsStudio() then -- TODO: figure out a way for people to easily put themselves in a devtable or something like that
+	userInputService.InputBegan:Connect(function(key,gpe)
+		if gpe then
+			konamiCode(key) -- 1532 comment this line out if you dont want konami code
+			if key.KeyCode == Enum.KeyCode.RightControl then
+				devmode(not DEV_MODE)
+			end
+		end
+	end)
+end
 
 game:GetService("UserInputService").InputBegan:Connect(function(key,gpe)
 	if gpe then
@@ -79,7 +89,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(key,gpe)
 end)
 -- DevTools
 
-local dtShown = false
+local dtShown = true
 
 local dtFrame = dGUI.ScreenSizeFrame.Devtools
 local dtContainer = dtFrame.Container
@@ -180,7 +190,7 @@ function toggleDevtoolsVisibility()
 	dtRightScrollframe.Visible = dtShown
 end
 
-dtPopoutButton.MouseEnter:Connect(function()
+dtPopoutButton.MouseEnter:Connect(function() -- wtf is this
 	tween(dtPopoutButton,tsi.expo05out,{BackgroundTransparency = 0,ImageTransparency = 0})
 end)
 dtPopoutButton.MouseLeave:Connect(function()
@@ -192,7 +202,6 @@ end)
 dtCloseButton.MouseLeave:Connect(function()
 	tween(dtCloseButton,tsi.expo05out,{BackgroundColor3 = Color3.fromRGB(45,45,45),TextColor3 = Color3.fromRGB(91,91,91)})
 end)
-
 dtCloseButton.MouseButton1Down:Connect(function()
 	tween(dtCloseButton,tsi.expo05out,{Size = UDim2.fromOffset(18,18)})
 end)
@@ -200,7 +209,6 @@ dtCloseButton.MouseButton1Up:Connect(function()
 	tween(dtCloseButton,tsi.back05out,{Size = UDim2.fromOffset(21,21)})
 	toggleDevtoolsVisibility()
 end)
-
 dtPopoutButton.MouseButton1Down:Connect(function()
 	tween(dtPopoutButton,tsi.expo05out,{Size = UDim2.fromOffset(23,23)})
 end)
@@ -225,11 +233,11 @@ dtToggleButton("VisTools particle culling","",_G.VisTools_ParticleCulling_output
 dtToggleButton("VisTools interior culling","",_G.VisTools_InteriorCulling_output,dtLeftScrollframe,function() _G.VisTools_InteriorCulling_output = not _G.VisTools_InteriorCulling_output end)
 dtToggleButton("VisTools verbose interior culling","",_G.VisTools_InteriorCulling_verboseOutput,dtLeftScrollframe,function() _G.VisTools_InteriorCulling_verboseOutput = not _G.VisTools_InteriorCulling_verboseOutput end)
 
+dtDivider("SAMPLE BUTTONS",dtRightScrollframe)
+dtMomentaryButton("Hi!", "Add your own buttons in the DevTools script! :)", dtRightScrollframe, function()
+	print("This is a " .. math.random((2^12),(2^48)) .. " byte GOAT file!")
+end)
 
-dtShown = true
-toggleDevtoolsVisibility() --[[ Whoops.
- I have to call this function because I left all of the values to if it was visible.
- Here is hoping nobody will notice... teehee :3
-]]
+toggleDevtoolsVisibility() 
 
 _G.GUIControllerLoaded = true
