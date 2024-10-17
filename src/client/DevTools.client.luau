@@ -6,10 +6,12 @@ local players = game:GetService("Players")
 local userInputService = game:GetService("UserInputService")
 local runService = game:GetService("RunService")
 local player = players.LocalPlayer
+
 local dGUI = player.PlayerGui:WaitForChild("DevUI")
 
 local outputframe = dGUI.ScreenSizeFrame.Output
 local outputSample = outputframe.OutputSample
+outputSample.Parent = nil
 
 local tsi = {
 	expo1out  = TweenInfo.new(1,  Enum.EasingStyle.Exponential,Enum.EasingDirection.Out),
@@ -19,7 +21,6 @@ local tsi = {
 }
 
 
-outputSample.Parent = nil
 
 function tween(inst,tsi,propTable)
 	game:GetService("TweenService"):Create(inst,tsi,propTable):Play() -- dont ask.

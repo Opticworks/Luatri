@@ -1,4 +1,7 @@
 --!nocheck
+
+-- TODO: this all needs a huge rewrite.
+
 _G.VisTools_InteriorCulling = true
 _G.VisTools_ParticleCulling = true
 _G.VisTools_TreeImpostors = true
@@ -9,7 +12,7 @@ _G.VisTools_ParticleCulling_output = false
 _G.VisTools_DistanceFading = true
 _G.VisTools_DistanceFading_output = true
 
-repeat task.wait(10) until game:IsLoaded()
+repeat task.wait() until game:IsLoaded()
 
 local runService = game:GetService("RunService")
 local CollectionService = game:GetService("CollectionService")
@@ -17,17 +20,12 @@ local CollectionService = game:GetService("CollectionService")
 -- Configuration
 
 local PARTICLE_CULLING_RANGE = 300
-local TREE_THRESHOLD_DISTANCE = 200
-local TREE_CHECK_INTERVAL = 0.4
-local TREE_BATCH_SIZE = 30
-local TREE_WARNING_MS = 0.1
-local TREE_BATCH_WARNING_MS = 0.5
-local TREE_FOLDER = workspace:WaitForChild("Trees")
+local TREE_IMPOSTOR_RANGE = 200
 
 -- Interior culling
 
-local camera = workspace.CurrentCamera
-local interiorFolder = game:GetService("Workspace"):WaitForChild("Interiors")
+local camera = workspace.CurrentCamera -- CurrentCamera might not even exist; try and fix
+local interiorFolder = workspace:WaitForChild("Interiors") -- Find another way to do this; this will yield the rest of the script if not found!
 
 local cullRegions = {}
 local initialTransparencyMap = {}
@@ -176,7 +174,7 @@ local updating = false
 function AddDetail(instance)
 	task.spawn(function()
 		local record = {}
-		record.cullDistance = TREE_THRESHOLD_DISTANCE
+		record.cullDistance = TREE_IMPOSTOR_RANGE
 		record.instance = instance
 		record.primaryPart = instance
 		record.visible = true
@@ -229,19 +227,13 @@ end
 Setup()
 
 RunService.Heartbeat:Connect(function(dt) --t odo dont nil impsotros
-	local player = game.Players.LocalPlayer
-	local character = player.Character
-	if (character == nil or character.PrimaryPart == nil) then
-		return
-	end
-	local pos = character.PrimaryPart.Position
+	local pos = camera.CFrame.Position
 	local cellSize = 4
 	local cell = pos // cellSize
 	if (cell ~= lastCell) then
 		lastCell = cell
 		pendingUpdate = true
 	end
-
 	if (pendingUpdate and (not updating)) then
 		updating = true
 		pendingUpdate = false
@@ -250,13 +242,11 @@ RunService.Heartbeat:Connect(function(dt) --t odo dont nil impsotros
 			for _,record in details do
 				local vec = record.primaryPart.Position - pos
 				local mag = vec.Magnitude
-				local impostor = record.parent.parent:WaitForChild("Impostor")
+				local impostor = record.parent.parent:FindFirstChild("Impostor")
 				if (mag < record.cullDistance and (not record.visible)) then
 					record.instance.Parent = record.parent
 					if impostor then
 						impostor.Billboard.Enabled = false
-					else
-						warn("impostor not found for a record (attempt to disable)")
 					end
 					record.visible = true
 					continue
@@ -265,8 +255,6 @@ RunService.Heartbeat:Connect(function(dt) --t odo dont nil impsotros
 					record.instance.Parent = nil
 					if impostor then
 						impostor.Billboard.Enabled = true
-					else
-						warn("impostor not found for a record (attempt to enable)")
 					end
 					record.visible = false
 				end
@@ -283,7 +271,8 @@ end)
 
 
 
-local particleEmitters = {} -- {emitter = ParticleEmitter, initialEnabled = bool}
+local particleEmitters = {} 
+local emitterLookup = {} 
 
 local function collectParticleEmitters()
 	for _, descendant in pairs(workspace:GetDescendants()) do
@@ -296,65 +285,67 @@ local function collectParticleEmitters()
 	end
 end
 
+local function addEmitter(emitter, initialEnabled)
+    particleEmitters[#particleEmitters + 1] = {emitter = emitter, initialEnabled = initialEnabled}
+    emitterLookup[emitter] = true 
+end
+
+local function removeEmitter(emitter)
+    for i, data in ipairs(particleEmitters) do
+        if data.emitter == emitter then
+            table.remove(particleEmitters, i)
+            break
+        end
+    end
+    emitterLookup[emitter] = nil 
+end
+
 local function isEmitterIndexed(emitter)
-	for _, data in pairs(particleEmitters) do
-		if data.emitter == emitter then
-			return true
-		end
-	end
-	return false
+    return emitterLookup[emitter] or false
 end
 
 local function handleNewDescendant(descendant)
-	if descendant:IsA("ParticleEmitter") and descendant.Parent:IsA("BasePart") then
-		if not isEmitterIndexed(descendant) then
-			table.insert(particleEmitters, {
-				emitter = descendant,
-				initialEnabled = descendant.Enabled
-			})
-		end
-	end
+    if descendant:IsA("ParticleEmitter") and descendant.Parent:IsA("BasePart") then
+        if not isEmitterIndexed(descendant) then
+            addEmitter(descendant, descendant.Enabled)
+        end
+    end
 end
 
 local function cleanUpEmitters()
-	for i = #particleEmitters, 1, -1 do
-		local data = particleEmitters[i]
-		if data.emitter == nil or data.emitter.Parent == nil then
-			if _G.VisTools_ParticleCulling_output then
-				_G.out("[VisTools particle culling] Particle emitter " .. i .. " removed because either it or its Parent are nil")
-			end
-			table.remove(particleEmitters, i)
-		end
-	end
+    for i = #particleEmitters, 1, -1 do
+        local data = particleEmitters[i]
+        if data.emitter == nil or data.emitter.Parent == nil then
+            if _G.VisTools_ParticleCulling_output then
+                _G.out("[VisTools particle culling] Particle emitter " .. i .. " removed because either it or its Parent are nil")
+            end
+            removeEmitter(data.emitter)
+        end
+    end
 end
 
 local function updateParticleEmitters()
-	if _G.VisTools_ParticleCulling then
-		for _, data in pairs(particleEmitters) do
-			local particleEmitter = data.emitter
-			local basePart = particleEmitter.Parent
-			local distance = (basePart.CFrame.Position - camera.CFrame.Position).Magnitude
-			particleEmitter.Enabled = distance < PARTICLE_CULLING_RANGE
-		end
-	else
-		for _, data in pairs(particleEmitters) do
-			data.emitter.Enabled = data.initialEnabled
-		end
-	end
+    if _G.VisTools_ParticleCulling then
+        for _, data in pairs(particleEmitters) do
+            local particleEmitter = data.emitter
+            local basePart = particleEmitter.Parent
+            local distance = (basePart.CFrame.Position - camera.CFrame.Position).Magnitude
+            particleEmitter.Enabled = distance < PARTICLE_CULLING_RANGE
+        end
+    else
+        for _, data in pairs(particleEmitters) do
+            data.emitter.Enabled = data.initialEnabled
+        end
+    end
 end
-
 
 collectParticleEmitters()
 
 coroutine.wrap(function()
-	while task.wait(0.1) do
-		cleanUpEmitters()
-		updateParticleEmitters()
-	end
+    while task.wait(0.1) do
+        cleanUpEmitters()
+        updateParticleEmitters()
+    end
 end)()
 
 workspace.DescendantAdded:Connect(handleNewDescendant)
-
-_G.out("[OK] VisTools tree impostor loop begun")
-_G.out("[OK] VisTools particle culling begun")
-_G.out("[OK] All VisTools systems operational")
