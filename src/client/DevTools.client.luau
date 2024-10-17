@@ -48,12 +48,6 @@ function devmode(state: boolean)
 	end
 end
 
-
---[[ Konami Code
-	Don't want the Konami Code? Do you prefer adding your own function that toggles this on or off?
-	Just comment out this whole thing, and set devmode(true) or devmode(false) the way you want to, to toggle the UI visibility.
-]]
-
 local tKonamiCode = {
 	Enum.KeyCode.Up, Enum.KeyCode.Up,
 	Enum.KeyCode.Down, Enum.KeyCode.Down,
@@ -74,10 +68,15 @@ local function konamiCode(input)
 	end
 end
 
-game:GetService("UserInputService").InputBegan:Connect(function(key)
-	konamiCode(key)
-end)
 
+game:GetService("UserInputService").InputBegan:Connect(function(key,gpe)
+	if gpe then
+		konamiCode(key) -- 1532 comment this line out if you dont want konami code
+		if key.KeyCode == Enum.KeyCode.RightControl then
+			devmode(not DEV_MODE)
+		end
+	end
+end)
 -- DevTools
 
 local dtShown = false
