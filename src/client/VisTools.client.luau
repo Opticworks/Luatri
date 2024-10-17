@@ -242,19 +242,19 @@ RunService.Heartbeat:Connect(function(dt) --t odo dont nil impsotros
 			for _,record in details do
 				local vec = record.primaryPart.Position - pos
 				local mag = vec.Magnitude
-				local impostor = record.parent.parent:FindFirstChild("Impostor")
+				local lod = record.parent.parent:FindFirstChild("LOD")
 				if (mag < record.cullDistance and (not record.visible)) then
 					record.instance.Parent = record.parent
-					if impostor then
-						impostor.Billboard.Enabled = false
+					if lod then
+						lod.visible = false
 					end
 					record.visible = true
 					continue
 				end
 				if (mag >= record.cullDistance and (record.visible)) then
 					record.instance.Parent = nil
-					if impostor then
-						impostor.Billboard.Enabled = true
+					if lod then
+						lod.visible = true
 					end
 					record.visible = false
 				end

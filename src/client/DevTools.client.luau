@@ -69,6 +69,7 @@ local function konamiCode(input)
 end
 
 if runService:IsStudio() then -- TODO: figure out a way for people to easily put themselves in a devtable or something like that
+	print("yes. its studio.")
 	userInputService.InputBegan:Connect(function(key,gpe)
 		if gpe then
 			konamiCode(key) -- 1532 comment this line out if you dont want konami code
