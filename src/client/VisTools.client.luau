@@ -12,7 +12,7 @@ _G.VisTools_ParticleCulling_output = false
 _G.VisTools_DistanceFading = true
 _G.VisTools_DistanceFading_output = true
 
-repeat task.wait() until game:IsLoaded()
+repeat task.wait() until _G.GUIControllerLoaded
 
 local runService = game:GetService("RunService")
 local CollectionService = game:GetService("CollectionService")

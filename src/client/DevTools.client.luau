@@ -238,6 +238,6 @@ dtMomentaryButton("Hi!", "Add your own buttons in the DevTools script! :)", dtRi
 	print("This is a " .. math.random((2^12),(2^48)) .. " byte GOAT file!")
 end)
 
-toggleDevtoolsVisibility() 
+toggleDevtoolsVisibility()
 
 _G.GUIControllerLoaded = true
