@@ -164,7 +164,6 @@ _G.out("[OK] VisTools interior culling begun")
 -- I stole this code from Cardboard Box Simulator, an example project made by MrChickenRocket
 -- thank you so much for making it open-source :)
 
-local RunService = game:GetService("RunService")
 
 local details = {}
 local lastCell = nil
@@ -226,7 +225,7 @@ function Setup()
 end
 Setup()
 
-RunService.Heartbeat:Connect(function(dt) --t odo dont nil impsotros
+runService.Heartbeat:Connect(function(dt)
 	local pos = camera.CFrame.Position
 	local cellSize = 4
 	local cell = pos // cellSize
@@ -271,8 +270,8 @@ end)
 
 
 
-local particleEmitters = {} 
-local emitterLookup = {} 
+local particleEmitters = {}
+local emitterLookup = {}
 
 local function collectParticleEmitters()
 	for _, descendant in pairs(workspace:GetDescendants()) do
@@ -287,7 +286,7 @@ end
 
 local function addEmitter(emitter, initialEnabled)
     particleEmitters[#particleEmitters + 1] = {emitter = emitter, initialEnabled = initialEnabled}
-    emitterLookup[emitter] = true 
+    emitterLookup[emitter] = true
 end
 
 local function removeEmitter(emitter)
@@ -297,7 +296,7 @@ local function removeEmitter(emitter)
             break
         end
     end
-    emitterLookup[emitter] = nil 
+    emitterLookup[emitter] = nil
 end
 
 local function isEmitterIndexed(emitter)
