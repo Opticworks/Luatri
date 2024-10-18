@@ -21,10 +21,12 @@ local CollectionService = game:GetService("CollectionService")
 
 local PARTICLE_CULLING_RANGE = 300
 local TREE_IMPOSTOR_RANGE = 200
+local DISTANCE_FADING_BEGIN = 600 -- for distance fading
+local DISTANCE_FADING_END = 1200
 
 -- Interior culling
 
-local camera = workspace.CurrentCamera -- CurrentCamera might not even exist; try and fix
+local camera = workspace.CurrentCamera
 local interiorFolder = workspace:WaitForChild("Interiors") -- Find another way to do this; this will yield the rest of the script if not found!
 
 local cullRegions = {}
@@ -241,26 +243,26 @@ runService.Heartbeat:Connect(function(dt)
 			for _,record in details do
 				local vec = record.primaryPart.Position - pos
 				local mag = vec.Magnitude
-				local lod = record.parent.parent:FindFirstChild("LOD")
+				local lod = record.parent.parent:WaitForChild("LOD")
 				if (mag < record.cullDistance and (not record.visible)) then
 					record.instance.Parent = record.parent
-					if lod then
-						lod.visible = false
+					if lod and lod.Visible then -- it was fine yesterday, wtf is up today???
+						lod.Visible = false
 					end
 					record.visible = true
 					continue
 				end
 				if (mag >= record.cullDistance and (record.visible)) then
 					record.instance.Parent = nil
-					if lod then
-						lod.visible = true
+					if lod and lod.Visible then
+						lod.Visible = true
 					end
 					record.visible = false
 				end
 				counter+=1
 				if (counter > 50) then
 					wait()
-					counter =0
+					counter = 0
 				end
 			end
 			updating = false
