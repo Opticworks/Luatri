@@ -1,15 +1,21 @@
--- Generated using RoadToGlory's Converter.
--- ... Which needed tinkering cuz Roblox did something with fonts. This script doesnt know about that.
+--!nocheck
 
-
-
-local globalFontId = 12187365977
+local globalFontId = 12187365977 -- Rubik
 
 
 local regularFont = Font.fromId(globalFontId,Enum.FontWeight.Regular)
 local semiBoldFont = Font.fromId(globalFontId,Enum.FontWeight.SemiBold)
 local boldFont = Font.fromId(globalFontId,Enum.FontWeight.Bold)
 
+local colorAccent1 = Color3.fromRGB(153, 0, 255)
+local colorAccent2 = Color3.fromRGB(153, 0, 203)
+local colorAccent3 = Color3.fromRGB(255,255,255)
+
+local transparencyAccent1 = 0.05
+local transparencyAccent2 = 0
+local transparencyAccent3 = 0 -- todo: just put these in a table
+
+local rightToLeft = true -- this will be used later for languages and scripts that are right-to-left, like Arabic, Persian, or Hebrew
 
 local Converted = {
 	["_DevUI"] = Instance.new("ScreenGui");
@@ -180,7 +186,7 @@ Converted["_Line2"].Size = UDim2.new(0, 3, 1, 0)
 Converted["_Line2"].Name = "Line"
 Converted["_Line2"].Parent = Converted["_RuleOfThirds"]
 
-Converted["_Line3"].BackgroundColor3 = Color3.fromRGB(255, 0, 4.000000236555934)
+Converted["_Line3"].BackgroundColor3 = Color3.fromRGB(255, 0, 4)
 Converted["_Line3"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Line3"].BorderSizePixel = 0
 Converted["_Line3"].Position = UDim2.new(0, 0, 0.660000026, 0)
@@ -289,7 +295,7 @@ Converted["_Frame3"].Parent = Converted["_Frame2"]
 
 Converted["_UIAspectRatioConstraint1"].Parent = Converted["_Frame3"]
 
-Converted["_UIStroke3"].Color = Color3.fromRGB(255, 0, 4.000000236555934)
+Converted["_UIStroke3"].Color = Color3.fromRGB(255, 0, 4)
 Converted["_UIStroke3"].Parent = Converted["_Frame3"]
 
 Converted["_UICorner1"].CornerRadius = UDim.new(1, 0)
@@ -304,7 +310,7 @@ Converted["_Frame4"].Position = UDim2.new(0, 0, 1, 0)
 Converted["_Frame4"].Size = UDim2.new(0.23623623, 0, 0.381877035, 0)
 Converted["_Frame4"].Parent = Converted["_Fibonacci"]
 
-Converted["_UIStroke4"].Color = Color3.fromRGB(255, 0, 4.000000236555934)
+Converted["_UIStroke4"].Color = Color3.fromRGB(255, 0, 4)
 Converted["_UIStroke4"].Parent = Converted["_Frame4"]
 
 Converted["_Frame5"].AnchorPoint = Vector2.new(0.5, 0.5)
@@ -318,7 +324,7 @@ Converted["_Frame5"].Parent = Converted["_Frame4"]
 
 Converted["_UIAspectRatioConstraint2"].Parent = Converted["_Frame5"]
 
-Converted["_UIStroke5"].Color = Color3.fromRGB(255, 0, 4.000000236555934)
+Converted["_UIStroke5"].Color = Color3.fromRGB(255, 0, 4)
 Converted["_UIStroke5"].Parent = Converted["_Frame5"]
 
 Converted["_UICorner2"].CornerRadius = UDim.new(1, 0)
@@ -376,7 +382,7 @@ Converted["_Frame9"].Parent = Converted["_Frame8"]
 
 Converted["_UIAspectRatioConstraint4"].Parent = Converted["_Frame9"]
 
-Converted["_UIStroke9"].Color = Color3.fromRGB(255, 0, 4.000000236555934)
+Converted["_UIStroke9"].Color = Color3.fromRGB(255, 0, 4)
 Converted["_UIStroke9"].Parent = Converted["_Frame9"]
 
 Converted["_UICorner4"].CornerRadius = UDim.new(1, 0)
@@ -391,7 +397,7 @@ Converted["_Frame10"].Position = UDim2.new(0.235999003, 0, 0.707119763, 0)
 Converted["_Frame10"].Size = UDim2.new(0.0550550558, 0, 0.0889967605, 0)
 Converted["_Frame10"].Parent = Converted["_Fibonacci"]
 
-Converted["_UIStroke10"].Color = Color3.fromRGB(255, 0, 4.000000236555934)
+Converted["_UIStroke10"].Color = Color3.fromRGB(255, 0, 4)
 Converted["_UIStroke10"].Parent = Converted["_Frame10"]
 
 Converted["_Frame11"].AnchorPoint = Vector2.new(0.5, 0.5)
@@ -405,7 +411,7 @@ Converted["_Frame11"].Parent = Converted["_Frame10"]
 
 Converted["_UIAspectRatioConstraint5"].Parent = Converted["_Frame11"]
 
-Converted["_UIStroke11"].Color = Color3.fromRGB(255, 0, 4.000000236555934)
+Converted["_UIStroke11"].Color = Color3.fromRGB(255, 0, 4)
 Converted["_UIStroke11"].Parent = Converted["_Frame11"]
 
 Converted["_UICorner5"].CornerRadius = UDim.new(1, 0)
@@ -420,7 +426,7 @@ Converted["_Frame12"].Position = UDim2.new(0.235999003, 0, 0.763753891, 0)
 Converted["_Frame12"].Size = UDim2.new(0.0550550558, 0, 0.0550161824, 0)
 Converted["_Frame12"].Parent = Converted["_Fibonacci"]
 
-Converted["_UIStroke12"].Color = Color3.fromRGB(255, 0, 4.000000236555934)
+Converted["_UIStroke12"].Color = Color3.fromRGB(255, 0, 4)
 Converted["_UIStroke12"].Parent = Converted["_Frame12"]
 
 Converted["_ScreenSizeFrame"].AnchorPoint = Vector2.new(0.5, 0.5)
@@ -429,7 +435,7 @@ Converted["_ScreenSizeFrame"].BackgroundTransparency = 1
 Converted["_ScreenSizeFrame"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_ScreenSizeFrame"].BorderSizePixel = 0
 Converted["_ScreenSizeFrame"].Position = UDim2.new(0.5, 0, 0.5, 0)
-Converted["_ScreenSizeFrame"].Size = UDim2.new(0.899999976, 0, 0.899999976, 0)
+Converted["_ScreenSizeFrame"].Size = UDim2.new(0.9, 0, 0.9, 0)
 Converted["_ScreenSizeFrame"].Name = "ScreenSizeFrame"
 Converted["_ScreenSizeFrame"].Parent = Converted["_DevUI"]
 
@@ -525,21 +531,21 @@ Converted["_UIStroke13"].Color = Color3.fromRGB(255, 255, 255)
 Converted["_UIStroke13"].Parent = Converted["_DevtoolsButton"]
 
 Converted["_Devtools"].AnchorPoint = Vector2.new(0.5, 0.5)
-Converted["_Devtools"].BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Converted["_Devtools"].BackgroundTransparency = 0.05000000074505806
+Converted["_Devtools"].BackgroundColor3 = colorAccent1
+Converted["_Devtools"].BackgroundTransparency = transparencyAccent1
 Converted["_Devtools"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Devtools"].BorderSizePixel = 0
 Converted["_Devtools"].Position = UDim2.new(0.5, 0, 0.5, 0)
-Converted["_Devtools"].Size = UDim2.new(0.589999974, 0, 0.589999974, 0)
+Converted["_Devtools"].Size = UDim2.new(0.6, 0, 0.6, 0)
 Converted["_Devtools"].Name = "Devtools"
 Converted["_Devtools"].Parent = Converted["_ScreenSizeFrame"]
 
 Converted["_UICorner7"].Parent = Converted["_Devtools"]
 
-Converted["_UIStroke14"].Color = Color3.fromRGB(255, 255, 255)
+Converted["_UIStroke14"].Color = colorAccent3
 Converted["_UIStroke14"].Parent = Converted["_Devtools"]
 
-Converted["_Titlebar"].BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Titlebar"].BackgroundColor3 = colorAccent1
 Converted["_Titlebar"].BackgroundTransparency = 0.5
 Converted["_Titlebar"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Titlebar"].BorderSizePixel = 0
@@ -587,7 +593,7 @@ Converted["_IGNORE_spacer"].Parent = Converted["_Titlebar"]
 
 Converted["_UICorner8"].Parent = Converted["_Titlebar"]
 
-Converted["_UIStroke15"].Color = Color3.fromRGB(255, 255, 255)
+Converted["_UIStroke15"].Color = colorAccent3
 Converted["_UIStroke15"].Parent = Converted["_Titlebar"]
 
 Converted["_Close"].FontFace = boldFont
@@ -697,7 +703,7 @@ Converted["_Click"].Text = ""
 Converted["_Click"].TextColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Click"].TextSize = 14
 Converted["_Click"].AutoButtonColor = false
-Converted["_Click"].BackgroundColor3 = Color3.fromRGB(28.000000230968, 28.000000230968, 28.000000230968)
+Converted["_Click"].BackgroundColor3 = Color3.fromRGB(28, 28, 28)
 Converted["_Click"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Click"].BorderSizePixel = 0
 Converted["_Click"].Size = UDim2.new(1, 0, 1, 0)
@@ -711,30 +717,50 @@ Converted["_Label1"].FontFace = semiBoldFont
 Converted["_Label1"].Text = "Whatever whatever whatever"
 Converted["_Label1"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_Label1"].TextSize = 15
-Converted["_Label1"].TextXAlignment = Enum.TextXAlignment.Left
 Converted["_Label1"].AutomaticSize = Enum.AutomaticSize.X
 Converted["_Label1"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_Label1"].BackgroundTransparency = 1
 Converted["_Label1"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Label1"].BorderSizePixel = 0
-Converted["_Label1"].Position = UDim2.new(0, 15, 0, 0)
+
+if not rightToLeft then
+	Converted["_Label1"].AnchorPoint = Vector2.new(0, 0)
+	Converted["_Label1"].TextXAlignment = Enum.TextXAlignment.Left
+	Converted["_Label1"].Position = UDim2.new(0, 15, 0, 0)
+else
+	Converted["_Label1"].AnchorPoint = Vector2.new(1, 0)
+	Converted["_Label1"].TextXAlignment = Enum.TextXAlignment.Right
+	Converted["_Label1"].Position = UDim2.new(1, -15, 0, 0)
+end
+
+
 Converted["_Label1"].Size = UDim2.new(0, 0, 1, 0)
 Converted["_Label1"].Name = "Label"
 Converted["_Label1"].Parent = Converted["_Click"]
 
-Converted["_sliderContainer"].AnchorPoint = Vector2.new(1, 0.5)
 Converted["_sliderContainer"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_sliderContainer"].BackgroundTransparency = 1
 Converted["_sliderContainer"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_sliderContainer"].BorderSizePixel = 0
 Converted["_sliderContainer"].ClipsDescendants = true
-Converted["_sliderContainer"].Position = UDim2.new(1, -7, 0.5, 0)
-Converted["_sliderContainer"].Size = UDim2.new(0, 100, 0.699999988, 1)
+Converted["_sliderContainer"].Size = UDim2.new(0, 45, 0.7, 1)
+
+if not rightToLeft then
+	Converted["_sliderContainer"].AnchorPoint = Vector2.new(1, 0.5)
+	Converted["_sliderContainer"].Position = UDim2.new(1, -7, 0.5, 0)
+else
+	Converted["_sliderContainer"].AnchorPoint = Vector2.new(0, 0.5)
+	Converted["_sliderContainer"].Position = UDim2.new(0, 7, 0.5, 0)
+end
+
+
+
+
 Converted["_sliderContainer"].Name = "sliderContainer"
 Converted["_sliderContainer"].Parent = Converted["_Click"]
 
 Converted["_Slider"].AnchorPoint = Vector2.new(1, 0)
-Converted["_Slider"].BackgroundColor3 = Color3.fromRGB(2.000000118277967, 2.000000118277967, 2.000000118277967)
+Converted["_Slider"].BackgroundColor3 = Color3.fromRGB(2, 2, 2)
 Converted["_Slider"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Slider"].BorderSizePixel = 0
 Converted["_Slider"].ClipsDescendants = true
@@ -844,13 +870,22 @@ Converted["_Label2"].FontFace = regularFont
 Converted["_Label2"].Text = "Whatever whatever whatever"
 Converted["_Label2"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_Label2"].TextSize = 15
-Converted["_Label2"].TextXAlignment = Enum.TextXAlignment.Left
 Converted["_Label2"].AutomaticSize = Enum.AutomaticSize.X
 Converted["_Label2"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_Label2"].BackgroundTransparency = 1
 Converted["_Label2"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Label2"].BorderSizePixel = 0
-Converted["_Label2"].Position = UDim2.new(0, 15, 0, 0)
+
+if not rightToLeft then
+	Converted["_Label2"].AnchorPoint = Vector2.new(0, 0)
+	Converted["_Label2"].TextXAlignment = Enum.TextXAlignment.Left
+	Converted["_Label2"].Position = UDim2.new(0, 15, 0, 0)
+else
+	Converted["_Label2"].AnchorPoint = Vector2.new(1, 0)
+	Converted["_Label2"].TextXAlignment = Enum.TextXAlignment.Right
+	Converted["_Label2"].Position = UDim2.new(1, -15, 0, 0)
+end
+
 Converted["_Label2"].Size = UDim2.new(0, 0, 1, 0)
 Converted["_Label2"].Name = "Label"
 Converted["_Label2"].Parent = Converted["_Click1"]

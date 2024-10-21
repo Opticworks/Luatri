@@ -26,7 +26,7 @@ function tween(inst,tsi,propTable)
 	game:GetService("TweenService"):Create(inst,tsi,propTable):Play() -- dont ask.
 end
 
-function _G.out(message:string,timeout)
+function _G.out(message: string,timeout)
 	if not timeout then timeout = 5 end
 	coroutine.wrap(function()
 		print(message)
@@ -120,7 +120,7 @@ function dtToggleButton(text,tooltip,sliderState,parent,call)
 	button.TooltipContainer.Tooltip.Text = tooltip
 	if not sState then
 		button.Click.sliderContainer.Slider.sliderAccent.Position = UDim2.fromScale(0.25,0.5)
-	else 
+	else
 		button.Click.sliderContainer.Slider.sliderAccent.Position = UDim2.fromScale(0.75,0.5)
 	end
 	button.Click.MouseEnter:Connect(function()
