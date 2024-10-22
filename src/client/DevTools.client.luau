@@ -50,52 +50,15 @@ function devmode(state: boolean)
 	end
 end
 
-local tKonamiCode = {
-	Enum.KeyCode.Up,
-	Enum.KeyCode.Up,
-	Enum.KeyCode.Down,
-	Enum.KeyCode.Down,
-	Enum.KeyCode.Left,
-	Enum.KeyCode.Right,
-	Enum.KeyCode.Left,
-	Enum.KeyCode.Right,
-	Enum.KeyCode.B,
-	Enum.KeyCode.A,
-}
-local konamiIndex = 1
-
-local function konamiCode(input)
-	if input.KeyCode == tKonamiCode[konamiIndex] then
-		konamiIndex = konamiIndex + 1
-		if konamiIndex > #tKonamiCode then
-			devmode(not DEV_MODE)
-			konamiIndex = 1
-		end
-	else
-		konamiIndex = 1
-	end
-end
 
 if runService:IsStudio() then -- TODO: figure out a way for people to easily put themselves in a devtable or something like that
-	print("yes. its studio.")
 	userInputService.InputBegan:Connect(function(key, gpe)
-		if gpe then
-			konamiCode(key) -- 1532 comment this line out if you dont want konami code
-			if key.KeyCode == Enum.KeyCode.RightControl then
-				devmode(not DEV_MODE)
-			end
+		if key.KeyCode == Enum.KeyCode.RightControl then
+			devmode(not DEV_MODE)
 		end
 	end)
 end
 
-game:GetService("UserInputService").InputBegan:Connect(function(key, gpe)
-	if gpe then
-		konamiCode(key) -- 1532 comment this line out if you dont want konami code
-		if key.KeyCode == Enum.KeyCode.RightControl then
-			devmode(not DEV_MODE)
-		end
-	end
-end)
 -- DevTools
 
 local dtShown = true
