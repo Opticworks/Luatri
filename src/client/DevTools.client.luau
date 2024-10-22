@@ -22,8 +22,8 @@ local tsi = {
 	back05out = TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
 }
 
-function tween(inst, tsi, propTable)
-	game:GetService("TweenService"):Create(inst, tsi, propTable):Play() -- dont ask.
+function tween(inst, tweeninfo, propTable)
+	game:GetService("TweenService"):Create(inst, tweeninfo, propTable):Play() -- dont ask.
 end
 
 function _G.out(message: string, timeout)
