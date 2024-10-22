@@ -221,12 +221,12 @@ function AddDetail(instance)
 			_G.out("[temp] Missing PrimaryPart for " .. instance.Name)
 			return
 		end
-
+		local lod = instance.parent.parent:WaitForChild("LOD")
 		local dist = record.instance:GetAttribute("distance")
 		if dist ~= nil then
 			record.cullDistance = dist
 		end
-
+		record.lod = lod
 		details[instance] = record
 	end)
 end
@@ -257,20 +257,15 @@ runService.Heartbeat:Connect(function(dt)
 			for _, record in details do
 				local vec = record.primaryPart.Position - pos
 				local mag = vec.Magnitude
-				local lod = record.parent.parent:WaitForChild("LOD")
 				if mag < record.cullDistance and not record.visible then
 					record.instance.Parent = record.parent
-					if lod and lod.Visible then -- it was fine yesterday, wtf is up today???
-						lod.Visible = false
-					end
+					record.lod.Parent = nil
 					record.visible = true
 					continue
 				end
 				if mag >= record.cullDistance and record.visible then
 					record.instance.Parent = nil
-					if lod and lod.Visible then
-						lod.Visible = true
-					end
+					record.lod.Parent = record.parent
 					record.visible = false
 				end
 				counter += 1
