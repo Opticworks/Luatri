@@ -221,7 +221,7 @@ function AddDetail(instance)
 			_G.out("[temp] Missing PrimaryPart for " .. instance.Name)
 			return
 		end
-		local lod = instance.parent.parent:WaitForChild("LOD")
+		local lod = instance.parent.parent.LOD
 		local dist = record.instance:GetAttribute("distance")
 		if dist ~= nil then
 			record.cullDistance = dist
