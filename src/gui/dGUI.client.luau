@@ -4,11 +4,11 @@ local globalFontId = 12187365977 -- Rubik
 local rightToLeft = false -- use for languages and scripts that are right-to-left, like Arabic, Persian, or Hebrew.. or for style points idrc.
 
 local color = {
-	black = Color3.fromRGB(0, 0, 0),
-	white = Color3.fromRGB(255, 255, 255),
-	blue = Color3.fromRGB(0, 115, 255),
+	black      = Color3.fromRGB(0, 0, 0),
+	white    =   Color3.fromRGB(255, 255, 255),
+	blue       = Color3.fromRGB(0, 115, 255),
 	light_gray = Color3.fromRGB(200, 200, 200),
-	dark_gray = Color3.fromRGB(31, 31, 31),
+	dark_gray  = Color3.fromRGB(31, 31, 31),
 }
 
 local regularFont = Font.fromId(globalFontId, Enum.FontWeight.Regular)

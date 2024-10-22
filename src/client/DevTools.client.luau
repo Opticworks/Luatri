@@ -50,7 +50,6 @@ function devmode(state: boolean)
 	end
 end
 
-
 if runService:IsStudio() then -- TODO: figure out a way for people to easily put themselves in a devtable or something like that
 	userInputService.InputBegan:Connect(function(key, gpe)
 		if key.KeyCode == Enum.KeyCode.RightControl then
@@ -78,12 +77,11 @@ dtToggleButtonTemplate.Parent = nil
 dtMomentaryButtonTemplate.Parent = nil
 dtDividerTemplate.Parent = nil
 
-
-local function c3ToRGB(c3: Color3): {R: number, G: number, B: number}
+local function c3ToRGB(c3: Color3): { R: number, G: number, B: number }
 	return {
-	  R = math.floor(c3.R * 255),
-	  G = math.floor(c3.G * 255),
-	  B = math.floor(c3.B * 255)
+		R = math.floor(c3.R * 255),
+		G = math.floor(c3.G * 255),
+		B = math.floor(c3.B * 255),
 	}
 end
 
@@ -91,10 +89,10 @@ local originalcolor = dtMomentaryButtonTemplate.Click.BackgroundColor3
 local ogcolortoRGB = c3ToRGB(originalcolor)
 local dimBy = 6
 local dimmedcolor = Color3.fromRGB(
-						math.clamp(ogcolortoRGB.R - dimBy, 0, 255), 
-						math.clamp(ogcolortoRGB.G - dimBy, 0, 255),
-						math.clamp(ogcolortoRGB.B - dimBy, 0, 255))
-
+	math.clamp(ogcolortoRGB.R - dimBy, 0, 255),
+	math.clamp(ogcolortoRGB.G - dimBy, 0, 255),
+	math.clamp(ogcolortoRGB.B - dimBy, 0, 255)
+)
 
 function dtDivider(text, parent)
 	local div = dtDividerTemplate:Clone()
@@ -113,11 +111,11 @@ function dtToggleButton(text, tooltip, sliderState, parent, call)
 		button.Click.sliderContainer.Slider.sliderAccent.Position = UDim2.fromScale(0.75, 0.5)
 	end
 	button.Click.MouseEnter:Connect(function()
-		tween(button.Click, tsi.expo02out, { BackgroundColor3 = dimmedcolor}) --cth
+		tween(button.Click, tsi.expo02out, { BackgroundColor3 = dimmedcolor }) --cth
 		tween(
 			button.Click.sliderContainer.Slider.strokeHelper.UIStroke,
 			tsi.expo02out,
-			{ Color = dimmedcolor} -- cth
+			{ Color = dimmedcolor } -- cth
 		)
 		if button.TooltipContainer.Tooltip.Text ~= "" then
 			tween(
@@ -133,12 +131,8 @@ function dtToggleButton(text, tooltip, sliderState, parent, call)
 		end
 	end)
 	button.Click.MouseLeave:Connect(function()
-		tween(
-			button.Click.sliderContainer.Slider.strokeHelper.UIStroke,
-			tsi.expo02out,
-			{ Color = originalcolor}
-		)
-		tween(button.Click, tsi.expo02out, { BackgroundColor3 = originalcolor}) --cth
+		tween(button.Click.sliderContainer.Slider.strokeHelper.UIStroke, tsi.expo02out, { Color = originalcolor })
+		tween(button.Click, tsi.expo02out, { BackgroundColor3 = originalcolor }) --cth
 		if button.TooltipContainer.Tooltip.Text ~= "" then
 			tween(
 				button.TooltipContainer,
@@ -178,7 +172,7 @@ function dtMomentaryButton(text, tooltip, parent, call)
 	button.Click.Label.Text = text
 	button.TooltipContainer.Tooltip.Text = tooltip
 	button.Click.MouseEnter:Connect(function()
-		tween(button.Click, tsi.expo02out, { BackgroundColor3 = dimmedcolor}) --cth
+		tween(button.Click, tsi.expo02out, { BackgroundColor3 = dimmedcolor }) --cth
 		if button.TooltipContainer.Tooltip.Text ~= "" then
 			tween(
 				button.TooltipContainer,
@@ -193,7 +187,7 @@ function dtMomentaryButton(text, tooltip, parent, call)
 		end
 	end)
 	button.Click.MouseLeave:Connect(function()
-		tween(button.Click, tsi.expo02out, {BackgroundColor3 = originalcolor}) --cth
+		tween(button.Click, tsi.expo02out, { BackgroundColor3 = originalcolor }) --cth
 		if button.TooltipContainer.Tooltip.Text ~= "" then
 			tween(
 				button.TooltipContainer,
