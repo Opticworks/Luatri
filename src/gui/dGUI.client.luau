@@ -1,41 +1,40 @@
 --!nocheck
 
 local globalFontId = 12187365977 -- Rubik
+local rightToLeft = false -- use for languages and scripts that are right-to-left, like Arabic, Persian, or Hebrew.. or for style points idrc.
+
+local color = {
+	black = Color3.fromRGB(0, 0, 0),
+	white = Color3.fromRGB(255, 255, 255),
+	blue = Color3.fromRGB(0, 115, 255),
+	light_gray = Color3.fromRGB(200, 200, 200),
+	dark_gray = Color3.fromRGB(31, 31, 31),
+}
 
 local regularFont = Font.fromId(globalFontId, Enum.FontWeight.Regular)
 local semiBoldFont = Font.fromId(globalFontId, Enum.FontWeight.SemiBold)
 local boldFont = Font.fromId(globalFontId, Enum.FontWeight.Bold)
 
 
--- i cannot be fucked to argue with myself about naming conventions, this is how it will be at least for now i guess.
--- SCREAMING_SNAKE_CASE is reserved for constants. by that logic snake_case should be variables.
--- i am just so tired. ill figure it out later.
-
-function TEMP_randomcolor()
-	local r = math.random(0, 255)
-	local g = math.random(0, 255)
-	local b = math.random(0, 255)
-	return Color3.fromRGB(r, g, b)
-end
-
-local ui_background_color = TEMP_randomcolor()
-local ui_titlebar_color = TEMP_randomcolor()
-local ui_titlebar_content_color = TEMP_randomcolor()
-
-local ui_stroke_color = TEMP_randomcolor()
-
-local ui_button_background_color = TEMP_randomcolor()
-local ui_button_text_color = TEMP_randomcolor()
-local ui_button_tooltip_background_color = TEMP_randomcolor()
-local ui_button_tooltip_text_color = TEMP_randomcolor()
-local ui_divider_group_color = TEMP_randomcolor()
-local ui_button_slider_on_color = TEMP_randomcolor()
-local ui_button_slider_off_color = TEMP_randomcolor()
-local ui_button_slider_circle_color = TEMP_randomcolor()
-local ui_scrollbar_color = TEMP_randomcolor()
 
 
-local rightToLeft = true -- this will be used later for languages and scripts that are right-to-left, like Arabic, Persian, or Hebrew
+local ui_background_color = color.black
+local ui_titlebar_color = color.black
+local ui_titlebar_content_color = color.white
+
+local ui_stroke_color = color.blue
+
+local ui_button_background_color = color.dark_gray
+local ui_button_text_color = color.white
+local ui_button_tooltip_background_color = color.black
+local ui_button_tooltip_text_color = color.white
+local ui_divider_group_color = color.white
+local ui_button_slider_on_color = color.blue
+local ui_button_slider_off_color =  color.black
+local ui_button_slider_circle_color = color.light_gray
+local ui_scrollbar_color = color.white
+
+
 
 local Converted = {
 	["_DevUI"] = Instance.new("ScreenGui"),
