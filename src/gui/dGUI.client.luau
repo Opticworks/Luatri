@@ -6,19 +6,34 @@ local regularFont = Font.fromId(globalFontId, Enum.FontWeight.Regular)
 local semiBoldFont = Font.fromId(globalFontId, Enum.FontWeight.SemiBold)
 local boldFont = Font.fromId(globalFontId, Enum.FontWeight.Bold)
 
---[[ temp: you should not see this
 
-xd
-t
-]]
+-- i cannot be fucked to argue with myself about naming conventions, this is how it will be at least for now i guess.
+-- SCREAMING_SNAKE_CASE is reserved for constants. by that logic snake_case should be variables.
+-- i am just so tired. ill figure it out later.
 
-local colorAccent1 = Color3.fromRGB(203, 0, 255)
-local colorAccent2 = Color3.fromRGB(153, 0, 203)
-local colorAccent3 = Color3.fromRGB(103, 0, 103)
+function TEMP_randomcolor()
+	local r = math.random(0, 255)
+	local g = math.random(0, 255)
+	local b = math.random(0, 255)
+	return Color3.fromRGB(r, g, b)
+end
 
-local transparencyAccent1 = 0.05
-local transparencyAccent2 = 0
-local transparencyAccent3 = 0 -- todo: just put these in a table
+local ui_background_color = TEMP_randomcolor()
+local ui_titlebar_color = TEMP_randomcolor()
+local ui_titlebar_content_color = TEMP_randomcolor()
+
+local ui_stroke_color = TEMP_randomcolor()
+
+local ui_button_background_color = TEMP_randomcolor()
+local ui_button_text_color = TEMP_randomcolor()
+local ui_button_tooltip_background_color = TEMP_randomcolor()
+local ui_button_tooltip_text_color = TEMP_randomcolor()
+local ui_divider_group_color = TEMP_randomcolor()
+local ui_button_slider_on_color = TEMP_randomcolor()
+local ui_button_slider_off_color = TEMP_randomcolor()
+local ui_button_slider_circle_color = TEMP_randomcolor()
+local ui_scrollbar_color = TEMP_randomcolor()
+
 
 local rightToLeft = true -- this will be used later for languages and scripts that are right-to-left, like Arabic, Persian, or Hebrew
 
@@ -536,8 +551,8 @@ Converted["_UIStroke13"].Color = Color3.fromRGB(255, 255, 255)
 Converted["_UIStroke13"].Parent = Converted["_DevtoolsButton"]
 
 Converted["_Devtools"].AnchorPoint = Vector2.new(0.5, 0.5)
-Converted["_Devtools"].BackgroundColor3 = colorAccent1
-Converted["_Devtools"].BackgroundTransparency = transparencyAccent1
+Converted["_Devtools"].BackgroundColor3 = ui_background_color
+Converted["_Devtools"].BackgroundTransparency = 0.05
 Converted["_Devtools"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Devtools"].BorderSizePixel = 0
 Converted["_Devtools"].Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -547,10 +562,10 @@ Converted["_Devtools"].Parent = Converted["_ScreenSizeFrame"]
 
 Converted["_UICorner7"].Parent = Converted["_Devtools"]
 
-Converted["_UIStroke14"].Color = colorAccent3
+Converted["_UIStroke14"].Color = ui_stroke_color
 Converted["_UIStroke14"].Parent = Converted["_Devtools"]
 
-Converted["_Titlebar"].BackgroundColor3 = colorAccent1
+Converted["_Titlebar"].BackgroundColor3 = ui_titlebar_color
 Converted["_Titlebar"].BackgroundTransparency = 0.5
 Converted["_Titlebar"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Titlebar"].BorderSizePixel = 0
@@ -560,7 +575,7 @@ Converted["_Titlebar"].Parent = Converted["_Devtools"]
 
 Converted["_TextLabel1"].FontFace = semiBoldFont
 Converted["_TextLabel1"].Text = "DEVTOOLS"
-Converted["_TextLabel1"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel1"].TextColor3 = ui_titlebar_content_color
 Converted["_TextLabel1"].TextSize = 14
 Converted["_TextLabel1"].TextTransparency = 0.5
 Converted["_TextLabel1"].AnchorPoint = Vector2.new(0, 0.5)
@@ -578,6 +593,7 @@ Converted["_ImageLabel1"].Image = "rbxassetid://13536538211"
 Converted["_ImageLabel1"].ImageTransparency = 0.5
 Converted["_ImageLabel1"].AnchorPoint = Vector2.new(0.5, 0.5)
 Converted["_ImageLabel1"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_ImageLabel1"].ImageColor3 = ui_titlebar_content_color
 Converted["_ImageLabel1"].BackgroundTransparency = 1
 Converted["_ImageLabel1"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_ImageLabel1"].BorderSizePixel = 0
@@ -598,7 +614,7 @@ Converted["_IGNORE_spacer"].Parent = Converted["_Titlebar"]
 
 Converted["_UICorner8"].Parent = Converted["_Titlebar"]
 
-Converted["_UIStroke15"].Color = colorAccent3
+Converted["_UIStroke15"].Color = ui_stroke_color
 Converted["_UIStroke15"].Parent = Converted["_Titlebar"]
 
 Converted["_Close"].FontFace = boldFont
@@ -661,7 +677,7 @@ Converted["_CatDivider"].Parent = Converted["_leftScroller"]
 
 Converted["_Label"].FontFace = semiBoldFont
 Converted["_Label"].Text = "Subcategory"
-Converted["_Label"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Label"].TextColor3 = ui_divider_group_color
 Converted["_Label"].TextSize = 14
 Converted["_Label"].AutomaticSize = Enum.AutomaticSize.X
 Converted["_Label"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -680,14 +696,14 @@ Converted["_UIListLayout3"].SortOrder = Enum.SortOrder.LayoutOrder
 Converted["_UIListLayout3"].VerticalAlignment = Enum.VerticalAlignment.Center
 Converted["_UIListLayout3"].Parent = Converted["_CatDivider"]
 
-Converted["_Line7"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Line7"].BackgroundColor3 = ui_divider_group_color
 Converted["_Line7"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Line7"].BorderSizePixel = 0
 Converted["_Line7"].Size = UDim2.new(1, 0, 0, 1)
 Converted["_Line7"].Name = "Line"
 Converted["_Line7"].Parent = Converted["_CatDivider"]
 
-Converted["_Line8"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Line8"].BackgroundColor3 = ui_divider_group_color
 Converted["_Line8"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Line8"].BorderSizePixel = 0
 Converted["_Line8"].LayoutOrder = 2
@@ -708,7 +724,7 @@ Converted["_Click"].Text = ""
 Converted["_Click"].TextColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Click"].TextSize = 14
 Converted["_Click"].AutoButtonColor = false
-Converted["_Click"].BackgroundColor3 = Color3.fromRGB(28, 28, 28)
+Converted["_Click"].BackgroundColor3 = ui_button_background_color
 Converted["_Click"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Click"].BorderSizePixel = 0
 Converted["_Click"].Size = UDim2.new(1, 0, 1, 0)
@@ -720,7 +736,7 @@ Converted["_UICorner10"].Parent = Converted["_Click"]
 
 Converted["_Label1"].FontFace = semiBoldFont
 Converted["_Label1"].Text = "Whatever whatever whatever"
-Converted["_Label1"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Label1"].TextColor3 = ui_button_text_color
 Converted["_Label1"].TextSize = 15
 Converted["_Label1"].AutomaticSize = Enum.AutomaticSize.X
 Converted["_Label1"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -761,7 +777,7 @@ Converted["_sliderContainer"].Name = "sliderContainer"
 Converted["_sliderContainer"].Parent = Converted["_Click"]
 
 Converted["_Slider"].AnchorPoint = Vector2.new(1, 0)
-Converted["_Slider"].BackgroundColor3 = Color3.fromRGB(2, 2, 2)
+Converted["_Slider"].BackgroundColor3 = ui_button_slider_off_color
 Converted["_Slider"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Slider"].BorderSizePixel = 0
 Converted["_Slider"].ClipsDescendants = true
@@ -777,7 +793,7 @@ Converted["_UIAspectRatioConstraint9"].AspectRatio = 2
 Converted["_UIAspectRatioConstraint9"].Parent = Converted["_Slider"]
 
 Converted["_sliderAccent"].AnchorPoint = Vector2.new(1, 0.5)
-Converted["_sliderAccent"].BackgroundColor3 = Color3.fromRGB(0, 115, 255)
+Converted["_sliderAccent"].BackgroundColor3 = ui_button_slider_on_color
 Converted["_sliderAccent"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_sliderAccent"].BorderSizePixel = 0
 Converted["_sliderAccent"].Position = UDim2.new(0.25, 0, 0.5, 0)
@@ -787,7 +803,7 @@ Converted["_sliderAccent"].Name = "sliderAccent"
 Converted["_sliderAccent"].Parent = Converted["_Slider"]
 
 Converted["_sliderCircle"].AnchorPoint = Vector2.new(0.5, 0.5)
-Converted["_sliderCircle"].BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+Converted["_sliderCircle"].BackgroundColor3 = ui_button_slider_circle_color
 Converted["_sliderCircle"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_sliderCircle"].BorderSizePixel = 0
 Converted["_sliderCircle"].Position = UDim2.new(1, 0, 0.5, 0)
@@ -800,7 +816,7 @@ Converted["_UIAspectRatioConstraint10"].Parent = Converted["_sliderCircle"]
 Converted["_UICorner12"].CornerRadius = UDim.new(1, 0)
 Converted["_UICorner12"].Parent = Converted["_sliderCircle"]
 
-Converted["_strokeHelper"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_strokeHelper"].BackgroundColor3 = ui_button_background_color
 Converted["_strokeHelper"].BackgroundTransparency = 1
 Converted["_strokeHelper"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_strokeHelper"].BorderSizePixel = 0
@@ -808,15 +824,15 @@ Converted["_strokeHelper"].Size = UDim2.new(1, 0, 1, 0)
 Converted["_strokeHelper"].Name = "strokeHelper"
 Converted["_strokeHelper"].Parent = Converted["_Slider"]
 
-Converted["_UIStroke16"].Color = Color3.fromRGB(28, 28, 28)
-Converted["_UIStroke16"].Thickness = 10.600000381469727
+Converted["_UIStroke16"].Color = ui_button_background_color
+Converted["_UIStroke16"].Thickness = 10
 Converted["_UIStroke16"].Parent = Converted["_strokeHelper"]
 
 Converted["_UICorner13"].CornerRadius = UDim.new(1, 0)
 Converted["_UICorner13"].Parent = Converted["_strokeHelper"]
 
 Converted["_TooltipContainer"].AnchorPoint = Vector2.new(0, 1)
-Converted["_TooltipContainer"].BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_TooltipContainer"].BackgroundColor3 = ui_button_tooltip_background_color
 Converted["_TooltipContainer"].BackgroundTransparency = 1
 Converted["_TooltipContainer"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_TooltipContainer"].BorderSizePixel = 0
@@ -828,11 +844,11 @@ Converted["_TooltipContainer"].Parent = Converted["_toggleButtonContainer"]
 
 Converted["_Tooltip"].FontFace = regularFont
 Converted["_Tooltip"].Text = "Does the 'whatever whatever whatever' thing"
-Converted["_Tooltip"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Tooltip"].TextColor3 = ui_button_tooltip_text_color
 Converted["_Tooltip"].TextSize = 14
 Converted["_Tooltip"].TextTransparency = 1
 Converted["_Tooltip"].AnchorPoint = Vector2.new(0, 1)
-Converted["_Tooltip"].BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Tooltip"].BackgroundColor3 = ui_button_tooltip_background_color
 Converted["_Tooltip"].BackgroundTransparency = 1
 Converted["_Tooltip"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Tooltip"].BorderSizePixel = 0
@@ -854,10 +870,10 @@ Converted["_momentaryButtonContainer"].Parent = Converted["_leftScroller"]
 
 Converted["_Click1"].FontFace = regularFont
 Converted["_Click1"].Text = ""
-Converted["_Click1"].TextColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Click1"].TextColor3 = ui_button_text_color
 Converted["_Click1"].TextSize = 14
 Converted["_Click1"].AutoButtonColor = false
-Converted["_Click1"].BackgroundColor3 = Color3.fromRGB(28, 28, 28)
+Converted["_Click1"].BackgroundColor3 = ui_button_background_color
 Converted["_Click1"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Click1"].BorderSizePixel = 0
 Converted["_Click1"].Size = UDim2.new(1, 0, 1, 0)
@@ -869,7 +885,7 @@ Converted["_UICorner15"].Parent = Converted["_Click1"]
 
 Converted["_Label2"].FontFace = regularFont
 Converted["_Label2"].Text = "Whatever whatever whatever"
-Converted["_Label2"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Label2"].TextColor3 = ui_button_text_color
 Converted["_Label2"].TextSize = 15
 Converted["_Label2"].AutomaticSize = Enum.AutomaticSize.X
 Converted["_Label2"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -892,7 +908,7 @@ Converted["_Label2"].Name = "Label"
 Converted["_Label2"].Parent = Converted["_Click1"]
 
 Converted["_TooltipContainer1"].AnchorPoint = Vector2.new(0, 1)
-Converted["_TooltipContainer1"].BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_TooltipContainer1"].BackgroundColor3 = ui_button_tooltip_background_color
 Converted["_TooltipContainer1"].BackgroundTransparency = 1
 Converted["_TooltipContainer1"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_TooltipContainer1"].BorderSizePixel = 0
@@ -904,11 +920,11 @@ Converted["_TooltipContainer1"].Parent = Converted["_momentaryButtonContainer"]
 
 Converted["_Tooltip1"].FontFace = regularFont
 Converted["_Tooltip1"].Text = "Does the 'whatever whatever whatever' thing"
-Converted["_Tooltip1"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Tooltip1"].TextColor3 = ui_button_tooltip_text_color
 Converted["_Tooltip1"].TextSize = 14
 Converted["_Tooltip1"].TextTransparency = 1
 Converted["_Tooltip1"].AnchorPoint = Vector2.new(0, 1)
-Converted["_Tooltip1"].BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Tooltip1"].BackgroundColor3 = ui_button_tooltip_background_color
 Converted["_Tooltip1"].BackgroundTransparency = 1
 Converted["_Tooltip1"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Tooltip1"].BorderSizePixel = 0
@@ -928,6 +944,7 @@ Converted["_rightScroller"].Active = true
 Converted["_rightScroller"].AnchorPoint = Vector2.new(1, 0)
 Converted["_rightScroller"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_rightScroller"].BackgroundTransparency = 1
+Converted["_rightScroller"].ScrollBarImageColor3 = ui_scrollbar_color
 Converted["_rightScroller"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_rightScroller"].BorderSizePixel = 0
 Converted["_rightScroller"].Position = UDim2.new(1, 0, 0, 0)
