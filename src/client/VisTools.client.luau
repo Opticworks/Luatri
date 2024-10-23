@@ -22,7 +22,7 @@ local CollectionService = game:GetService("CollectionService")
 -- Configuration
 
 local PARTICLE_CULLING_RANGE = 300
-local TREE_IMPOSTOR_RANGE = 200
+local TREE_IMPOSTOR_RANGE = 500
 
 -- Interior culling
 
