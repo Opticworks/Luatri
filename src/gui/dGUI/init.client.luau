@@ -831,7 +831,7 @@ Converted["_Click1"].Parent = Converted["_momentaryButtonContainer"]
 Converted["_UICorner15"].CornerRadius = UDim.new(2, 0)
 Converted["_UICorner15"].Parent = Converted["_Click1"]
 
-Converted["_Label2"].FontFace = theme.font.regular
+Converted["_Label2"].FontFace = theme.font.semiBold
 Converted["_Label2"].Text = "Whatever whatever whatever"
 Converted["_Label2"].TextColor3 = theme.ui_button_text_color
 Converted["_Label2"].TextSize = 15
