@@ -4,19 +4,16 @@ local globalFontId = 12187365977 -- Rubik
 local rightToLeft = false -- use for languages and scripts that are right-to-left, like Arabic, Persian, or Hebrew.. or for style points idrc.
 
 local color = {
-	black      = Color3.fromRGB(0, 0, 0),
-	white    =   Color3.fromRGB(255, 255, 255),
-	blue       = Color3.fromRGB(0, 115, 255),
+	black = Color3.fromRGB(0, 0, 0),
+	white = Color3.fromRGB(255, 255, 255),
+	blue = Color3.fromRGB(0, 115, 255),
 	light_gray = Color3.fromRGB(200, 200, 200),
-	dark_gray  = Color3.fromRGB(31, 31, 31),
+	dark_gray = Color3.fromRGB(31, 31, 31),
 }
 
 local regularFont = Font.fromId(globalFontId, Enum.FontWeight.Regular)
 local semiBoldFont = Font.fromId(globalFontId, Enum.FontWeight.SemiBold)
 local boldFont = Font.fromId(globalFontId, Enum.FontWeight.Bold)
-
-
-
 
 local ui_background_color = color.black
 local ui_titlebar_color = color.black
@@ -30,11 +27,9 @@ local ui_button_tooltip_background_color = color.black
 local ui_button_tooltip_text_color = color.white
 local ui_divider_group_color = color.white
 local ui_button_slider_on_color = color.blue
-local ui_button_slider_off_color =  color.black
+local ui_button_slider_off_color = color.black
 local ui_button_slider_circle_color = color.light_gray
 local ui_scrollbar_color = color.white
-
-
 
 local Converted = {
 	["_DevUI"] = Instance.new("ScreenGui"),
@@ -743,16 +738,6 @@ Converted["_Label1"].BackgroundTransparency = 1
 Converted["_Label1"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Label1"].BorderSizePixel = 0
 
-if not rightToLeft then
-	Converted["_Label1"].AnchorPoint = Vector2.new(0, 0)
-	Converted["_Label1"].TextXAlignment = Enum.TextXAlignment.Left
-	Converted["_Label1"].Position = UDim2.new(0, 15, 0, 0)
-else
-	Converted["_Label1"].AnchorPoint = Vector2.new(1, 0)
-	Converted["_Label1"].TextXAlignment = Enum.TextXAlignment.Right
-	Converted["_Label1"].Position = UDim2.new(1, -15, 0, 0)
-end
-
 Converted["_Label1"].Size = UDim2.new(0, 0, 1, 0)
 Converted["_Label1"].Name = "Label"
 Converted["_Label1"].Parent = Converted["_Click"]
@@ -763,14 +748,6 @@ Converted["_sliderContainer"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_sliderContainer"].BorderSizePixel = 0
 Converted["_sliderContainer"].ClipsDescendants = true
 Converted["_sliderContainer"].Size = UDim2.new(0, 45, 0.7, 1)
-
-if not rightToLeft then
-	Converted["_sliderContainer"].AnchorPoint = Vector2.new(1, 0.5)
-	Converted["_sliderContainer"].Position = UDim2.new(1, -7, 0.5, 0)
-else
-	Converted["_sliderContainer"].AnchorPoint = Vector2.new(0, 0.5)
-	Converted["_sliderContainer"].Position = UDim2.new(0, 7, 0.5, 0)
-end
 
 Converted["_sliderContainer"].Name = "sliderContainer"
 Converted["_sliderContainer"].Parent = Converted["_Click"]
@@ -892,16 +869,6 @@ Converted["_Label2"].BackgroundTransparency = 1
 Converted["_Label2"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_Label2"].BorderSizePixel = 0
 
-if not rightToLeft then
-	Converted["_Label2"].AnchorPoint = Vector2.new(0, 0)
-	Converted["_Label2"].TextXAlignment = Enum.TextXAlignment.Left
-	Converted["_Label2"].Position = UDim2.new(0, 15, 0, 0)
-else
-	Converted["_Label2"].AnchorPoint = Vector2.new(1, 0)
-	Converted["_Label2"].TextXAlignment = Enum.TextXAlignment.Right
-	Converted["_Label2"].Position = UDim2.new(1, -15, 0, 0)
-end
-
 Converted["_Label2"].Size = UDim2.new(0, 0, 1, 0)
 Converted["_Label2"].Name = "Label"
 Converted["_Label2"].Parent = Converted["_Click1"]
@@ -1000,6 +967,30 @@ Converted["_TextLabel3"].BorderSizePixel = 0
 Converted["_TextLabel3"].Position = UDim2.new(0.5, 0, 0.5, 0)
 Converted["_TextLabel3"].Size = UDim2.new(0.6, 0, 0, 50)
 Converted["_TextLabel3"].Parent = Converted["_Modal"]
+
+if not rightToLeft then
+	Converted["_sliderContainer"].AnchorPoint = Vector2.new(1, 0.5)
+	Converted["_sliderContainer"].Position = UDim2.new(1, -7, 0.5, 0)
+
+	Converted["_Label1"].AnchorPoint = Vector2.new(0, 0)
+	Converted["_Label1"].TextXAlignment = Enum.TextXAlignment.Left
+	Converted["_Label1"].Position = UDim2.new(0, 15, 0, 0)
+
+	Converted["_Label2"].AnchorPoint = Vector2.new(0, 0)
+	Converted["_Label2"].TextXAlignment = Enum.TextXAlignment.Left
+	Converted["_Label2"].Position = UDim2.new(0, 15, 0, 0)
+else
+	Converted["_sliderContainer"].AnchorPoint = Vector2.new(0, 0.5)
+	Converted["_sliderContainer"].Position = UDim2.new(0, 7, 0.5, 0)
+
+	Converted["_Label1"].AnchorPoint = Vector2.new(1, 0)
+	Converted["_Label1"].TextXAlignment = Enum.TextXAlignment.Right
+	Converted["_Label1"].Position = UDim2.new(1, -15, 0, 0)
+
+	Converted["_Label2"].AnchorPoint = Vector2.new(1, 0)
+	Converted["_Label2"].TextXAlignment = Enum.TextXAlignment.Right
+	Converted["_Label2"].Position = UDim2.new(1, -15, 0, 0)
+end
 
 _G.convertedGUILoaded = true
 script:Destroy()

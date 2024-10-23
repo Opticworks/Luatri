@@ -23,8 +23,6 @@ local CollectionService = game:GetService("CollectionService")
 
 local PARTICLE_CULLING_RANGE = 300
 local TREE_IMPOSTOR_RANGE = 200
-local DISTANCE_FADING_BEGIN = 600 -- for distance fading
-local DISTANCE_FADING_END = 1200
 
 -- Interior culling
 
@@ -241,7 +239,7 @@ function Setup()
 end
 Setup()
 
-runService.Heartbeat:Connect(function(dt)
+runService.Heartbeat:Connect(function()
 	local pos = camera.CFrame.Position
 	local cellSize = 4
 	local cell = pos // cellSize

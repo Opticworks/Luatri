@@ -51,7 +51,7 @@ function devmode(state: boolean)
 end
 
 if runService:IsStudio() then -- TODO: figure out a way for people to easily put themselves in a devtable or something like that
-	userInputService.InputBegan:Connect(function(key, gpe)
+	userInputService.InputBegan:Connect(function(key)
 		if key.KeyCode == Enum.KeyCode.RightControl then
 			devmode(not DEV_MODE)
 		end
