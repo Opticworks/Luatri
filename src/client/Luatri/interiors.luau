@@ -144,7 +144,6 @@ function interior.updateCulling()
 		end
 	end
 end
-
 function interior.onHeartbeat()
 	if cfg.InteriorCulling ~= cullingEnabled then
 		cullingEnabled = cfg.InteriorCulling

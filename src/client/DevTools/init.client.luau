@@ -12,9 +12,9 @@ local dGUI = player.PlayerGui:WaitForChild("DevUI")
 
 local outputframe = dGUI.ScreenSizeFrame.Output
 
-repeat
-	task.wait()
-until states.convertedGUILoaded
+if not states.convertedGUILoaded then
+	states._convertedGUILoadedBindableEvent:Wait()
+end
 
 function tween(inst, tweeninfo, propTable)
 	svc.tween:Create(inst, tweeninfo, propTable):Play() -- dont ask.
@@ -281,3 +281,4 @@ end)
 toggleDevtoolsVisibility()
 
 states.GUIControllerLoaded = true
+states._GUIControllerLoadedBindable:Fire()

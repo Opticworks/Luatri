@@ -949,5 +949,6 @@ else
 end
 
 states.convertedGUILoaded = true
+states._GUIControllerLoadedBindable:Fire()
 
 script:Destroy()
