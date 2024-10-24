@@ -1,34 +1,25 @@
 --!nocheck
 
 local svc = require(game.ReplicatedStorage.Shared.services)
+local err = require(svc.replicatedStorage.errors)
+local cfg = require(svc.replicatedStorage.vistools_config)
+local msg = require(svc.replicatedStorage.output)
 
 -- TODO: this all needs a huge rewrite.
 
-_G.VisTools_InteriorCulling = true
-_G.VisTools_ParticleCulling = true
-_G.VisTools_TreeImpostors = true
-_G.VisTools_TreeImpostors_output = false
-_G.VisTools_TreeImpostors_batch_output = true
-_G.VisTools_InteriorCulling_output = true
-_G.VisTools_ParticleCulling_output = false
-_G.VisTools_DistanceFading = true
-_G.VisTools_DistanceFading_output = true
+
 
 repeat
 	task.wait()
 until _G.GUIControllerLoaded
 
--- Configuration
-
-local PARTICLE_CULLING_RANGE = 300
-local TREE_IMPOSTOR_RANGE = 500
 
 -- Interior culling
 
 local camera = workspace.CurrentCamera
 
 if not workspace:WaitForChild("Interiors",5) then
-	_G.out("oh no",5,"error")
+	_G.throw(err[3])
 end
 local interiorFolder = workspace:WaitForChild("Interiors") -- Find another way to do this; this will yield the rest of the script if not found!
 
@@ -137,8 +128,8 @@ local function updateCulling()
 		local startTime = tick()
 		cullFolder(folder)
 		local endTime = tick()
-		if _G.VisTools_InteriorCulling_output then
-			_G.out(
+		if cfg.InteriorCulling_output then
+			msg.out(
 				"[VisTools interior culling] Entered cull region: "
 					.. tostring(folder)
 					.. ", took "
@@ -151,8 +142,8 @@ local function updateCulling()
 		local startTime = tick()
 		restoreFolderVisibility(folder)
 		local endTime = tick()
-		if _G.VisTools_InteriorCulling_output then
-			_G.out(
+		if cfg.VisTools_InteriorCulling_output then
+			msg.out(
 				"[VisTools interior culling] Exited cull region: "
 					.. tostring(folder)
 					.. ", took "
@@ -164,8 +155,8 @@ local function updateCulling()
 end
 
 svc.run.RenderStepped:Connect(function()
-	if _G.VisTools_InteriorCulling ~= cullingEnabled then
-		cullingEnabled = _G.VisTools_InteriorCulling
+	if cfg.VisTools_InteriorCulling ~= cullingEnabled then
+		cullingEnabled = cfg.VisTools_InteriorCulling
 		if not cullingEnabled then
 			showAllItems()
 		end
@@ -177,7 +168,7 @@ end)
 
 setupCullBrushRegions()
 
-_G.out("[OK] VisTools interior culling begun")
+msg.out("[OK] VisTools interior culling begun")
 
 -- tree impostors
 -- I stole this code from Cardboard Box Simulator, an example project made by MrChickenRocket
@@ -191,7 +182,7 @@ local updating = false
 function AddDetail(instance)
 	task.spawn(function()
 		local record = {}
-		record.cullDistance = TREE_IMPOSTOR_RANGE
+		record.cullDistance = cfg.TREE_IMPOSTOR_RANGE
 		record.instance = instance
 		record.primaryPart = instance
 		record.visible = true
@@ -219,7 +210,7 @@ function AddDetail(instance)
 		end
 
 		if record.primaryPart == nil then
-			_G.out("[temp] Missing PrimaryPart for " .. instance.Name)
+			msg.out("[temp] Missing PrimaryPart for " .. instance.Name)
 			return
 		end
 		record.lod = instance.parent.parent:WaitForChild("LOD",math.huge)
@@ -325,7 +316,7 @@ local function cleanUpEmitters()
 		local data = particleEmitters[i]
 		if data.emitter == nil or data.emitter.Parent == nil then
 			if _G.VisTools_ParticleCulling_output then
-				_G.out(
+				msg.out(
 					"[VisTools particle culling] Particle emitter "
 						.. i
 						.. " removed because either it or its Parent are nil"
@@ -342,7 +333,7 @@ local function updateParticleEmitters()
 			local particleEmitter = data.emitter
 			local basePart = particleEmitter.Parent
 			local distance = (basePart.CFrame.Position - camera.CFrame.Position).Magnitude
-			particleEmitter.Enabled = distance < PARTICLE_CULLING_RANGE
+			particleEmitter.Enabled = distance < cfg.PARTICLE_CULLING_RANGE
 		end
 	else
 		for _, data in pairs(particleEmitters) do

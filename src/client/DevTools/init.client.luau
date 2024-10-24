@@ -8,15 +8,13 @@ local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Shared"):
 local tsi = require(svc.replicatedStorage.tweeninfos)
 local err = require(svc.replicatedStorage.errors)
 local wrn = require(svc.replicatedStorage.warns)
+local msg = require(svc.replicatedStorage.output)
 
 local player = svc.players.LocalPlayer
 
 local dGUI = player.PlayerGui:WaitForChild("DevUI")
 
 local outputframe = dGUI.ScreenSizeFrame.Output
-local outputSample = outputframe.OutputSample
-outputSample.Parent = nil
-
 
 function _G.throw(code, type)
     local message
@@ -25,8 +23,8 @@ function _G.throw(code, type)
     else
         message = "[" .. code .. "] " .. err[code]
     end
-    _G.out(message, 20, type or "error")
-    _G.out("-- Stack begin --\n" .. debug.traceback() .. "-- Stack end --", 20, "info")
+    msg.out(message, 20, type or "error",outputframe)
+    msg.out("-- Stack begin --\n" .. debug.traceback() .. "-- Stack end --", 20, "info",outputframe)
 end
 
 
@@ -34,46 +32,12 @@ function tween(inst, tweeninfo, propTable)
 	svc.tween:Create(inst, tweeninfo, propTable):Play() -- dont ask.
 end
 
-function _G.out(message: string, timeout: number, type: string)
-	local color
-	local color2
-	if not timeout then
-		timeout = 5
-	end
-	if type == "error" then
-		color = Color3.fromRGB(127,0,0)
-		color2 = Color3.fromRGB(255,255,255)
-		warn(message)
-	elseif type == "warn" then
-		color = Color3.fromRGB(179, 179, 0)
-		color2 = Color3.fromRGB(0, 0, 0)
-		warn(message)
-	elseif type == "info" then
-		color = Color3.fromRGB(0,0,0)
-		color2 = Color3.fromRGB(0, 60, 255)
-		print(message)
-	else type = "output"
-		color = Color3.fromRGB(0, 0, 0)
-		color2 = Color3.fromRGB(255, 255, 255)
-		print(message)
-	end
-	coroutine.wrap(function()
-		local output = outputSample:Clone()
-		output.Text = message
-		output.Parent = outputframe
-		tween(output, tsi.expo02out, { BackgroundColor3 = color, TextColor3 = color2})
-		task.wait(timeout)
-		tween(output, TweenInfo.new(timeout / 2), { BackgroundTransparency = 1, TextTransparency = 1 })
-		task.wait(timeout / 2)
-		output:Destroy()
-	end)()
-end
 
 function devmode(state: boolean)
 	if state ~= DEV_MODE then
 		dGUI.Enabled = state
 		DEV_MODE = state
-		_G.out("DEV_MODE: " .. tostring(state))
+		msg.out("DEV_MODE: " .. tostring(state),5,"output",outputframe)
 	end
 end
 
@@ -319,7 +283,7 @@ end)
 dtDivider("TEST OUTPUTS", right)
 
 dtMomentaryButton("Normal output","A normal level output",right,function()
-	_G.out("Hello! This is a test output! " .. math.random(1,2000),5,"output")
+	msg.out("Hello! This is a test output! " .. math.random(1,2000),5,"output",outputframe)
 end)
 
 dtMomentaryButton("Warn output","A warning level output",right,function()
