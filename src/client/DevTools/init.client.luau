@@ -1,5 +1,5 @@
 local DEV_MODE = false
-
+task.synchronize()
 local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):WaitForChild("services"))
 local tsi = require(svc.replicatedStorage.tweeninfos)
 local msg = require(svc.replicatedStorage.output)
@@ -11,11 +11,14 @@ local player = svc.players.LocalPlayer
 local dGUI = player.PlayerGui:WaitForChild("DevUI")
 
 local outputframe = dGUI.ScreenSizeFrame.Output
-
+--[[
 if not states.convertedGUILoaded then
+	print("waiting waiting waiting...")
 	states._convertedGUILoadedBindableEvent:Wait()
-end
+	print("waited enough...")
 
+end
+]]
 function tween(inst, tweeninfo, propTable)
 	svc.tween:Create(inst, tweeninfo, propTable):Play() -- dont ask.
 end
@@ -279,6 +282,6 @@ dtMomentaryButton("Error output", "A danger level output", right, function()
 end)
 
 toggleDevtoolsVisibility()
-
+print("controller loaded")
 states.GUIControllerLoaded = true
 states._GUIControllerLoadedBindable:Fire()

@@ -947,8 +947,9 @@ else
 	Converted["_Label2"].TextXAlignment = Enum.TextXAlignment.Right
 	Converted["_Label2"].Position = UDim2.new(1, -15, 0, 0)
 end
+print("converted gui loaded")
 
 states.convertedGUILoaded = true
-states._GUIControllerLoadedBindable:Fire()
-
+states._convertedGUILoadedBindable:Fire()
+print(tostring(states.convertedGUILoaded))
 script:Destroy()

@@ -112,36 +112,10 @@ function interior.updateCulling()
 		end
 	end
 	for folder in pairs(foldersToCull) do
-		local startTime = tick()
 		interior.cullFolder(folder)
-		local endTime = tick()
-		if cfg.InteriorCulling_output then
-			msg.out(
-				"[luatri interior culling] Entered cull region: "
-					.. tostring(folder)
-					.. ", took "
-					.. (endTime - startTime) * 1000
-					.. "ms",
-				5,
-				"output"
-			)
-		end
 	end
 	for folder in pairs(foldersToUncull) do
-		local startTime = tick()
 		interior.restoreFolderVisibility(folder)
-		local endTime = tick()
-		if cfg.InteriorCulling_output then
-			msg.out(
-				"[luatri interior culling] Exited cull region: "
-					.. tostring(folder)
-					.. ", took "
-					.. (endTime - startTime) * 1000
-					.. "ms",
-				5,
-				"output"
-			)
-		end
 	end
 end
 function interior.onHeartbeat()

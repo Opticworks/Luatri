@@ -1,11 +1,8 @@
-
 local particles = {}
-
 
 local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):WaitForChild("services"))
 local cfg = require(svc.replicatedStorage.luatri_config)
 local msg = require(svc.replicatedStorage.output)
-
 
 local particleEmitters = {}
 local emitterLookup = {}
@@ -83,14 +80,11 @@ end
 
 particles.collectParticleEmitters()
 
-
-
 function particles.onHeartbeat()
-		particles.cleanUpEmitters()
-		particles.updateParticleEmitters()
+	particles.cleanUpEmitters()
+	particles.updateParticleEmitters()
 end
 
 workspace.DescendantAdded:Connect(particles.handleNewDescendant)
-
 
 return particles

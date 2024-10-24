@@ -1,4 +1,3 @@
-
 local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):WaitForChild("services"))
 local cfg = require(svc.replicatedStorage.luatri_config)
 local msg = require(svc.replicatedStorage.output)
@@ -42,7 +41,7 @@ function tree.AddDetail(instance)
 		end
 
 		if record.primaryPart == nil then
-			msg.throw(wrn[4],"warn")
+			msg.throw(wrn[4], "warn")
 			return
 		end
 		record.lod = instance.parent.parent:WaitForChild("LOD", math.huge)
@@ -55,16 +54,18 @@ function tree.AddDetail(instance)
 end
 
 function tree.setup()
+	task.synchronize()
 	svc.collection:GetInstanceAddedSignal("Detail_Small"):Connect(function(instance)
 		tree.AddDetail(instance)
 	end)
 	for _, instance in svc.collection:GetTagged("Detail_Small") do
 		tree.AddDetail(instance)
 	end
+	task.desynchronize()
 end
 
 function tree.onHeartbeat()
-local pos = workspace.CurrentCamera.CFrame.Position
+	local pos = workspace.CurrentCamera.CFrame.Position
 	local cellSize = 4
 	local cell = pos // cellSize
 	if cell ~= lastCell then
@@ -80,15 +81,19 @@ local pos = workspace.CurrentCamera.CFrame.Position
 				local vec = record.primaryPart.Position - pos
 				local mag = vec.Magnitude
 				if mag < record.cullDistance and not record.visible then
+					task.synchronize()
 					record.instance.Parent = record.parent
 					record.lod.Parent = nil
 					record.visible = true
+					task.desynchronize()
 					continue
 				end
 				if mag >= record.cullDistance and record.visible then
+					task.synchronize()
 					record.instance.Parent = nil
 					record.lod.Parent = record.parent
 					record.visible = false
+					task.desynchronize()
 				end
 				counter += 1
 				if counter > 50 then
