@@ -1,8 +1,8 @@
 --!nocheck
 
-local svc = require(game.ReplicatedStorage.Shared.services)
+local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):WaitForChild("services"))
 local err = require(svc.replicatedStorage.errors)
-local cfg = require(svc.replicatedStorage.vistools_config)
+local cfg = require(svc.replicatedStorage.luatri_config)
 local msg = require(svc.replicatedStorage.output)
 local states = require(svc.replicatedStorage.states)
 -- TODO: this all needs a huge rewrite.
@@ -133,7 +133,7 @@ local function updateCulling()
 		local endTime = tick()
 		if cfg.InteriorCulling_output then
 			msg.out(
-				"[VisTools interior culling] Entered cull region: "
+				"[luatri interior culling] Entered cull region: "
 					.. tostring(folder)
 					.. ", took "
 					.. (endTime - startTime) * 1000
@@ -148,9 +148,9 @@ local function updateCulling()
 		local startTime = tick()
 		restoreFolderVisibility(folder)
 		local endTime = tick()
-		if cfg.VisTools_InteriorCulling_output then
+		if cfg.InteriorCulling_output then
 			msg.out(
-				"[VisTools interior culling] Exited cull region: "
+				"[luatri interior culling] Exited cull region: "
 					.. tostring(folder)
 					.. ", took "
 					.. (endTime - startTime) * 1000
@@ -164,8 +164,8 @@ local function updateCulling()
 end
 
 svc.run.RenderStepped:Connect(function()
-	if cfg.VisTools_InteriorCulling ~= cullingEnabled then
-		cullingEnabled = cfg.VisTools_InteriorCulling
+	if cfg.InteriorCulling ~= cullingEnabled then
+		cullingEnabled = cfg.InteriorCulling
 		if not cullingEnabled then
 			showAllItems()
 		end
@@ -177,7 +177,7 @@ end)
 
 setupCullBrushRegions()
 
-msg.out("[OK] VisTools interior culling begun", 5, "output", outputframe)
+msg.out("[OK] luatri interior culling begun", 5, "output", outputframe)
 
 -- tree impostors
 -- I stole this code from Cardboard Box Simulator, an example project made by MrChickenRocket
@@ -324,9 +324,9 @@ local function cleanUpEmitters()
 	for i = #particleEmitters, 1, -1 do
 		local data = particleEmitters[i]
 		if data.emitter == nil or data.emitter.Parent == nil then
-			if cfg.VisTools_ParticleCulling_output then
+			if cfg.ParticleCulling_output then
 				msg.out(
-					"[VisTools particle culling] Particle emitter "
+					"[luatri particle culling] Particle emitter "
 						.. i
 						.. " removed because either it or its Parent are nil",
 					5,
@@ -340,7 +340,7 @@ local function cleanUpEmitters()
 end
 
 local function updateParticleEmitters()
-	if cfg.VisTools_ParticleCulling then
+	if cfg.ParticleCulling then
 		for _, data in pairs(particleEmitters) do
 			local particleEmitter = data.emitter
 			local basePart = particleEmitter.Parent

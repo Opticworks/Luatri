@@ -1,7 +1,7 @@
 --!nocheck
 
 local theme = require(script.theme)
-local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("services"))
+local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):WaitForChild("services"))
 local states = require(svc.replicatedStorage.states)
 
 local Converted = {

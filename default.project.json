@@ -1,9 +1,9 @@
 {
-  "name": "VisTools",
+  "name": "Luatri",
   "tree": {
     "$className": "DataModel",
     "ReplicatedStorage": {
-      "Shared": {
+      "Luatri": {
         "$path": "src/shared"
       }
     },

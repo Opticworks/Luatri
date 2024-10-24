@@ -1,9 +1,9 @@
 local DEV_MODE = false
 
-local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("services"))
+local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):WaitForChild("services"))
 local tsi = require(svc.replicatedStorage.tweeninfos)
 local msg = require(svc.replicatedStorage.output)
-local cfg = require(svc.replicatedStorage.vistools_config)
+local cfg = require(svc.replicatedStorage.luatri_config)
 local states = require(svc.replicatedStorage.states)
 
 local player = svc.players.LocalPlayer
@@ -28,7 +28,7 @@ function devmode(state: boolean)
 	end
 end
 
-if svc.run:IsStudio() then -- TODO: figure out a way for people to easily put themselves in a devtable or something like that
+if svc.run:IsStudio() or game.PlaceId == 87531394511191 then -- TODO: figure out a way for people to easily put themselves in a devtable or something like that
 	svc.userInput.InputBegan:Connect(function(key)
 		if key.KeyCode == Enum.KeyCode.RightControl then
 			devmode(not DEV_MODE)
@@ -80,7 +80,7 @@ end
 
 function dtToggleButton(text, tooltip, sliderState, parent, call)
 	local button = dtToggleButtonTemplate:Clone()
-	local sState = sliderState -- fuck my life
+	local sState = sliderState
 	button.Click.Label.Text = text
 	button.TooltipContainer.Tooltip.Text = tooltip
 	if not sState then
@@ -236,7 +236,7 @@ end)
 
 -- YOU CAN APPEND YOUR FUNCTIONS HERE AS YOU WISH
 
-dtDivider("VISTOOLS", left)
+dtDivider("LUATRI", left)
 
 dtToggleButton("Particle Culling", "", cfg.ParticleCulling, left, function()
 	cfg.ParticleCulling = not cfg.ParticleCulling
@@ -247,13 +247,13 @@ end)
 
 dtDivider("DEBUG OUTPUTS", left)
 
-dtToggleButton("VisTools particle culling", "", cfg.ParticleCulling_output, left, function()
+dtToggleButton("Luatri particle culling", "", cfg.ParticleCulling_output, left, function()
 	cfg.ParticleCulling_output = not cfg.ParticleCulling_output
 end)
-dtToggleButton("VisTools interior culling", "", cfg.InteriorCulling_output, left, function()
+dtToggleButton("Luatri interior culling", "", cfg.InteriorCulling_output, left, function()
 	cfg.InteriorCulling_output = not cfg.InteriorCulling_output
 end)
-dtToggleButton("VisTools verbose interior culling", "", cfg.InteriorCulling_verboseOutput, left, function()
+dtToggleButton("Luatri verbose interior culling", "", cfg.InteriorCulling_verboseOutput, left, function()
 	cfg.InteriorCulling_verboseOutput = not cfg.InteriorCulling_verboseOutput
 end)
 
