@@ -27,6 +27,10 @@ local TREE_IMPOSTOR_RANGE = 500
 -- Interior culling
 
 local camera = workspace.CurrentCamera
+
+if not workspace:WaitForChild("Interiors",5) then
+	_G.out("oh no",5,"error")
+end
 local interiorFolder = workspace:WaitForChild("Interiors") -- Find another way to do this; this will yield the rest of the script if not found!
 
 local cullRegions = {}

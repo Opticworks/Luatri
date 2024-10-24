@@ -1,4 +1,4 @@
--- Stellar (untested)
+-- Calm Darya (untested)
 
 local theme = {}
 
@@ -7,8 +7,8 @@ theme.rightToLeft = false -- for right-to-left languages or style preferences
 
 theme.color = {
 	black = Color3.fromRGB(31,31,31),
-	white = Color3.fromHex("#348AC7"),
-	blue = Color3.fromHex("#7474BF"),
+	white = Color3.fromRGB(255, 255, 255),
+	blue = Color3.fromHex("#49a09d"),
 	light_gray = Color3.fromRGB(200, 200, 200),
 	dark_gray = Color3.fromHex("#182848"),
 	darker_gray = Color3.fromHex("#132039"),

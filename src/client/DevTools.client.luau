@@ -26,15 +26,30 @@ function tween(inst, tweeninfo, propTable)
 	game:GetService("TweenService"):Create(inst, tweeninfo, propTable):Play() -- dont ask.
 end
 
-function _G.out(message: string, timeout)
+function _G.out(message: string, timeout: number, type: string)
+	local color
+	local color2
 	if not timeout then
 		timeout = 5
 	end
-	coroutine.wrap(function()
+	if type == "error" then
+		color = Color3.fromRGB(127,0,0)
+		color2 = Color3.fromRGB(255,255,255)
+		warn(message)
+	elseif type == "warn" then
+		color = Color3.fromRGB(179, 179, 0)
+		color2 = Color3.fromRGB(0, 0, 0)
+		warn(message)
+	else type = "output"
+		color = Color3.fromRGB(0, 0, 0)
+		color2 = Color3.fromRGB(255, 255, 255)
 		print(message)
+	end
+	coroutine.wrap(function()
 		local output = outputSample:Clone()
+		output.Text = message
 		output.Parent = outputframe
-		tween(output, tsi.expo02out, { BackgroundColor3 = Color3.fromRGB(0, 0, 0) })
+		tween(output, tsi.expo02out, { BackgroundColor3 = color, TextColor3 = color2})
 		task.wait(timeout)
 		tween(output, TweenInfo.new(timeout / 2), { BackgroundTransparency = 1, TextTransparency = 1 })
 		task.wait(timeout / 2)
@@ -287,8 +302,21 @@ dtToggleButton(
 
 dtDivider("SAMPLE BUTTONS", dtRightScrollframe)
 dtMomentaryButton("Hi!", "Add your own buttons in the DevTools script! :)", dtRightScrollframe, function()
-	print("This is a " .. math.random((2 ^ 12), (2 ^ 48)) .. " byte GOAT file!")
+	print("meow")
 end)
+dtDivider("TEST OUTPUTS", dtRightScrollframe)
+
+dtMomentaryButton("Normal output","A normal level output",dtRightScrollframe,function()
+	_G.out("Hello! This is a test output! " .. math.random(1,2000),5,"output")
+end)
+
+dtMomentaryButton("Warn output","A warning level output",dtRightScrollframe,function()
+	_G.out("Hello! This is a test warn! " .. math.random(1,2000),5,"warn")
+end)
+dtMomentaryButton("Error output","A danger level output",dtRightScrollframe,function()
+	_G.out("Dangerous operation was caught and the program must now shut down.",20,"error")
+end)
+
 
 toggleDevtoolsVisibility()
 
