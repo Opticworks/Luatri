@@ -4,9 +4,10 @@ until _G.convertedGUILoaded
 
 local DEV_MODE = false
 
-local svc = require(game.ReplicatedStorage.Shared.services)
-local tsi = require(game.ReplicatedStorage.Shared.tweeninfos)
-
+local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("services"))
+local tsi = require(svc.replicatedStorage.tweeninfos)
+local err = require(svc.replicatedStorage.errors)
+local wrn = require(svc.replicatedStorage.warns)
 
 local player = svc.players.LocalPlayer
 
@@ -15,6 +16,18 @@ local dGUI = player.PlayerGui:WaitForChild("DevUI")
 local outputframe = dGUI.ScreenSizeFrame.Output
 local outputSample = outputframe.OutputSample
 outputSample.Parent = nil
+
+
+function _G.throw(code, type)
+    local message
+    if type == "warn" then
+        message = "[" .. code .. "] " .. wrn[code]
+    else
+        message = "[" .. code .. "] " .. err[code]
+    end
+    _G.out(message, 20, type or "error")
+    _G.out("-- Stack begin --\n" .. debug.traceback() .. "Stack end", 20, "info")
+end
 
 
 function tween(inst, tweeninfo, propTable)
@@ -35,6 +48,10 @@ function _G.out(message: string, timeout: number, type: string)
 		color = Color3.fromRGB(179, 179, 0)
 		color2 = Color3.fromRGB(0, 0, 0)
 		warn(message)
+	elseif type == "info" then
+		color = Color3.fromRGB(0,0,0)
+		color2 = Color3.fromRGB(0, 60, 255)
+		print(message)
 	else type = "output"
 		color = Color3.fromRGB(0, 0, 0)
 		color2 = Color3.fromRGB(255, 255, 255)
@@ -306,10 +323,14 @@ dtMomentaryButton("Normal output","A normal level output",right,function()
 end)
 
 dtMomentaryButton("Warn output","A warning level output",right,function()
-	_G.out("Hello! This is a test warn! " .. math.random(1,2000),5,"warn")
+	_G.throw(1,"warn")
+	_G.throw(2,"warn")
 end)
 dtMomentaryButton("Error output","A danger level output",right,function()
-	_G.out("Dangerous operation was caught and the program must now shut down.",20,"error")
+	_G.throw(1)
+	_G.throw(2)
+	_G.throw(3)
+	_G.throw(9008)
 end)
 
 

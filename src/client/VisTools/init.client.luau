@@ -81,9 +81,9 @@ local function setupCullBrushRegions()
 			})
 		else
 			if folder then
-				_G.out("<b>[VisTools warning]</b> Cull brush not found or invalid for folder: " .. folder.Name)
+				_G.throw(1 .. " for " .. tostring(folder),"warn")
 			else
-				_G.out("<b>[VisTools warning]</b> Cull brush not found or invalid for an unknown folder")
+				_G.throw(2,"warn")
 			end
 		end
 	end
