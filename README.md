@@ -15,6 +15,8 @@ With Luatri, you can expect to see:
 
 Luatri is currently very early in the rewriting process but we should see the 0.1.0 package be ready and out by late November :)
 
+Our Trello is [here](https://trello.com/b/Yaz2aodH/vistools) in case you wanna see what's planned.
+
 ## Ok I don't care, where's the docs?
 
 [Here :)](https://opticworks.github.io/)
