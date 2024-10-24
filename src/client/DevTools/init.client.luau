@@ -26,7 +26,7 @@ function _G.throw(code, type)
         message = "[" .. code .. "] " .. err[code]
     end
     _G.out(message, 20, type or "error")
-    _G.out("-- Stack begin --\n" .. debug.traceback() .. "Stack end", 20, "info")
+    _G.out("-- Stack begin --\n" .. debug.traceback() .. "-- Stack end --", 20, "info")
 end
 
 
