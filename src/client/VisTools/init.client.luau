@@ -241,7 +241,7 @@ function Setup()
 end
 Setup()
 
-svc.collection.Heartbeat:Connect(function()
+svc.run.Heartbeat:Connect(function()
 	local pos = camera.CFrame.Position
 	local cellSize = 4
 	local cell = pos // cellSize

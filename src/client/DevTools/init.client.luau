@@ -8,7 +8,7 @@ local svc = require(game.ReplicatedStorage.Shared.services)
 local tsi = require(game.ReplicatedStorage.Shared.tweeninfos)
 
 
-local player = svc.player.LocalPlayer
+local player = svc.players.LocalPlayer
 
 local dGUI = player.PlayerGui:WaitForChild("DevUI")
 
