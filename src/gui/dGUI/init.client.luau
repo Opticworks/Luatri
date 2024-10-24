@@ -1,7 +1,8 @@
 --!nocheck
 
 local theme = require(script.theme)
-
+local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("services"))
+local states = require(svc.replicatedStorage.states)
 
 local Converted = {
 	["_DevUI"] = Instance.new("ScreenGui"),
@@ -947,5 +948,6 @@ else
 	Converted["_Label2"].Position = UDim2.new(1, -15, 0, 0)
 end
 
-_G.convertedGUILoaded = true
+states.convertedGUILoaded = true
+
 script:Destroy()

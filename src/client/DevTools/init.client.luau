@@ -1,14 +1,10 @@
-repeat
-	task.wait()
-until _G.convertedGUILoaded
-
 local DEV_MODE = false
 
 local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("services"))
 local tsi = require(svc.replicatedStorage.tweeninfos)
-local err = require(svc.replicatedStorage.errors)
-local wrn = require(svc.replicatedStorage.warns)
 local msg = require(svc.replicatedStorage.output)
+local cfg = require(svc.replicatedStorage.vistools_config)
+local states = require(svc.replicatedStorage.states)
 
 local player = svc.players.LocalPlayer
 
@@ -16,28 +12,19 @@ local dGUI = player.PlayerGui:WaitForChild("DevUI")
 
 local outputframe = dGUI.ScreenSizeFrame.Output
 
-function _G.throw(code, type)
-    local message
-    if type == "warn" then
-        message = "[" .. code .. "] " .. wrn[code]
-    else
-        message = "[" .. code .. "] " .. err[code]
-    end
-    msg.out(message, 20, type or "error",outputframe)
-    msg.out("-- Stack begin --\n" .. debug.traceback() .. "-- Stack end --", 20, "info",outputframe)
-end
-
+repeat
+	task.wait()
+until states.convertedGUILoaded
 
 function tween(inst, tweeninfo, propTable)
 	svc.tween:Create(inst, tweeninfo, propTable):Play() -- dont ask.
 end
 
-
 function devmode(state: boolean)
 	if state ~= DEV_MODE then
 		dGUI.Enabled = state
 		DEV_MODE = state
-		msg.out("DEV_MODE: " .. tostring(state),5,"output",outputframe)
+		msg.out("DEV_MODE: " .. tostring(state), 5, "output", outputframe)
 	end
 end
 
@@ -251,53 +238,46 @@ end)
 
 dtDivider("VISTOOLS", left)
 
-dtToggleButton("Particle Culling", "", _G.VisTools_ParticleCulling, left, function()
-	_G.VisTools_ParticleCulling = not _G.VisTools_ParticleCulling
+dtToggleButton("Particle Culling", "", cfg.ParticleCulling, left, function()
+	cfg.ParticleCulling = not cfg.ParticleCulling
 end)
-dtToggleButton("Interior Culling", "", _G.VisTools_InteriorCulling, left, function()
-	_G.VisTools_InteriorCulling = not _G.VisTools_InteriorCulling
+dtToggleButton("Interior Culling", "", cfg.InteriorCulling, left, function()
+	cfg.InteriorCulling = not cfg.InteriorCulling
 end)
 
 dtDivider("DEBUG OUTPUTS", left)
 
-dtToggleButton("VisTools particle culling", "", _G.VisTools_ParticleCulling_output, left, function()
-	_G.VisTools_ParticleCulling_output = not _G.VisTools_ParticleCulling_output
+dtToggleButton("VisTools particle culling", "", cfg.ParticleCulling_output, left, function()
+	cfg.ParticleCulling_output = not cfg.ParticleCulling_output
 end)
-dtToggleButton("VisTools interior culling", "", _G.VisTools_InteriorCulling_output, left, function()
-	_G.VisTools_InteriorCulling_output = not _G.VisTools_InteriorCulling_output
+dtToggleButton("VisTools interior culling", "", cfg.InteriorCulling_output, left, function()
+	cfg.InteriorCulling_output = not cfg.InteriorCulling_output
 end)
-dtToggleButton(
-	"VisTools verbose interior culling",
-	"",
-	_G.VisTools_InteriorCulling_verboseOutput,
-	left,
-	function()
-		_G.VisTools_InteriorCulling_verboseOutput = not _G.VisTools_InteriorCulling_verboseOutput
-	end
-)
+dtToggleButton("VisTools verbose interior culling", "", cfg.InteriorCulling_verboseOutput, left, function()
+	cfg.InteriorCulling_verboseOutput = not cfg.InteriorCulling_verboseOutput
+end)
 
 dtDivider("SAMPLE BUTTONS", right)
 dtMomentaryButton("Hi!", "Add your own buttons in the DevTools script! :)", right, function()
-	print("meow")
+	msg.out("meow",5,"output",outputframe)
 end)
 dtDivider("TEST OUTPUTS", right)
 
-dtMomentaryButton("Normal output","A normal level output",right,function()
-	msg.out("Hello! This is a test output! " .. math.random(1,2000),5,"output",outputframe)
+dtMomentaryButton("Normal output", "A normal level output", right, function()
+	msg.out("Hello! This is a test output! " .. math.random(1, 2000), 5, "output", outputframe)
 end)
 
-dtMomentaryButton("Warn output","A warning level output",right,function()
-	_G.throw(1,"warn")
-	_G.throw(2,"warn")
+dtMomentaryButton("Warn output", "A warning level output", right, function()
+	msg.throw(1, "warn", outputframe)
+	msg.throw(2, "warn", outputframe)
 end)
-dtMomentaryButton("Error output","A danger level output",right,function()
-	_G.throw(1)
-	_G.throw(2)
-	_G.throw(3)
-	_G.throw(9008)
+dtMomentaryButton("Error output", "A danger level output", right, function()
+	msg.throw(1, "error", outputframe)
+	msg.throw(2, "error", outputframe)
+	msg.throw(3, "error", outputframe)
+	msg.throw(9008, "error", outputframe)
 end)
-
 
 toggleDevtoolsVisibility()
 
-_G.GUIControllerLoaded = true
+states.GUIControllerLoaded = true

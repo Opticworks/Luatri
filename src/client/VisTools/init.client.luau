@@ -4,22 +4,25 @@ local svc = require(game.ReplicatedStorage.Shared.services)
 local err = require(svc.replicatedStorage.errors)
 local cfg = require(svc.replicatedStorage.vistools_config)
 local msg = require(svc.replicatedStorage.output)
-
+local states = require(svc.replicatedStorage.states)
 -- TODO: this all needs a huge rewrite.
 
+local player = svc.players.LocalPlayer
 
+local dGUI = player.PlayerGui:WaitForChild("DevUI")
+
+local outputframe = dGUI.ScreenSizeFrame.Output
 
 repeat
 	task.wait()
-until _G.GUIControllerLoaded
-
+until states.GUIControllerLoaded
 
 -- Interior culling
 
 local camera = workspace.CurrentCamera
 
-if not workspace:WaitForChild("Interiors",5) then
-	_G.throw(err[3])
+if not workspace:WaitForChild("Interiors", 5) then
+	msg.throw(err[3], outputframe)
 end
 local interiorFolder = workspace:WaitForChild("Interiors") -- Find another way to do this; this will yield the rest of the script if not found!
 
@@ -72,9 +75,9 @@ local function setupCullBrushRegions()
 			})
 		else
 			if folder then
-				_G.throw(1 .. " for " .. tostring(folder),"warn")
+				msg.throw(1 .. " for " .. tostring(folder), "warn", outputframe)
 			else
-				_G.throw(2,"warn")
+				msg.throw(2, "warn", outputframe)
 			end
 		end
 	end
@@ -134,7 +137,10 @@ local function updateCulling()
 					.. tostring(folder)
 					.. ", took "
 					.. (endTime - startTime) * 1000
-					.. "ms"
+					.. "ms",
+				5,
+				"output",
+				outputframe
 			)
 		end
 	end
@@ -148,7 +154,10 @@ local function updateCulling()
 					.. tostring(folder)
 					.. ", took "
 					.. (endTime - startTime) * 1000
-					.. "ms"
+					.. "ms",
+				5,
+				"output",
+				outputframe
 			)
 		end
 	end
@@ -168,7 +177,7 @@ end)
 
 setupCullBrushRegions()
 
-msg.out("[OK] VisTools interior culling begun")
+msg.out("[OK] VisTools interior culling begun", 5, "output", outputframe)
 
 -- tree impostors
 -- I stole this code from Cardboard Box Simulator, an example project made by MrChickenRocket
@@ -210,10 +219,10 @@ function AddDetail(instance)
 		end
 
 		if record.primaryPart == nil then
-			msg.out("[temp] Missing PrimaryPart for " .. instance.Name)
+			msg.out("[temp] Missing PrimaryPart for " .. instance.Name, 5, "output", outputframe)
 			return
 		end
-		record.lod = instance.parent.parent:WaitForChild("LOD",math.huge)
+		record.lod = instance.parent.parent:WaitForChild("LOD", math.huge)
 		local dist = record.instance:GetAttribute("distance")
 		if dist ~= nil then
 			record.cullDistance = dist
@@ -315,11 +324,14 @@ local function cleanUpEmitters()
 	for i = #particleEmitters, 1, -1 do
 		local data = particleEmitters[i]
 		if data.emitter == nil or data.emitter.Parent == nil then
-			if _G.VisTools_ParticleCulling_output then
+			if cfg.VisTools_ParticleCulling_output then
 				msg.out(
 					"[VisTools particle culling] Particle emitter "
 						.. i
-						.. " removed because either it or its Parent are nil"
+						.. " removed because either it or its Parent are nil",
+					5,
+					"output",
+					outputframe
 				)
 			end
 			removeEmitter(data.emitter)
@@ -328,7 +340,7 @@ local function cleanUpEmitters()
 end
 
 local function updateParticleEmitters()
-	if _G.VisTools_ParticleCulling then
+	if cfg.VisTools_ParticleCulling then
 		for _, data in pairs(particleEmitters) do
 			local particleEmitter = data.emitter
 			local basePart = particleEmitter.Parent

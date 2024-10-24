@@ -1,5 +1,5 @@
 -- Default
-    
+
 local theme = {}
 
 theme.globalFontId = 12187365977 -- Rubik

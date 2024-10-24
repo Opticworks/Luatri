@@ -6,7 +6,7 @@ theme.globalFontId = 12187365977 -- Rubik
 theme.rightToLeft = false -- for right-to-left languages or style preferences
 
 theme.color = {
-	black = Color3.fromRGB(31,31,31),
+	black = Color3.fromRGB(31, 31, 31),
 	white = Color3.fromRGB(255, 255, 255),
 	blue = Color3.fromHex("#49a09d"),
 	light_gray = Color3.fromRGB(200, 200, 200),

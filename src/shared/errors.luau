@@ -9,6 +9,4 @@ error[127] = "cannot find command"
 error[128] = "fatal error"
 error[9008] = "emergency"
 
-
-
 return error
