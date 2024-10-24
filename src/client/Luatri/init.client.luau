@@ -13,6 +13,10 @@ trees.setup()
 
 task.synchronize()
 
+svc.run.Heartbeat:ConnectParallel(function()
+	states.camPos = workspace.CurrentCamera.CFrame.Position
+end)
+
 svc.run.Heartbeat:ConnectParallel(trees.onHeartbeat)
 svc.run.Heartbeat:ConnectParallel(interiors.onHeartbeat)
 svc.run.Heartbeat:ConnectParallel(particles.onHeartbeat)

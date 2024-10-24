@@ -2,6 +2,7 @@ local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):
 local cfg = require(svc.replicatedStorage.luatri_config)
 local msg = require(svc.replicatedStorage.output)
 local wrn = require(svc.replicatedStorage.warns)
+local state = require(svc.replicatedStorage.states)
 
 local tree = {}
 
@@ -65,9 +66,9 @@ function tree.setup()
 end
 
 function tree.onHeartbeat()
-	local pos = workspace.CurrentCamera.CFrame.Position
+	
 	local cellSize = 4
-	local cell = pos // cellSize
+	local cell = state.camPos // cellSize
 	if cell ~= lastCell then
 		lastCell = cell
 		pendingUpdate = true
@@ -78,23 +79,21 @@ function tree.onHeartbeat()
 		task.spawn(function()
 			local counter = 0
 			for _, record in details do
-				local vec = record.primaryPart.Position - pos
+				local vec = record.primaryPart.Position - state.camPos
 				local mag = vec.Magnitude
-				if mag < record.cullDistance and not record.visible then
-					task.synchronize()
-					record.instance.Parent = record.parent
-					record.lod.Parent = nil
-					record.visible = true
-					task.desynchronize()
-					continue
-				end
-				if mag >= record.cullDistance and record.visible then
-					task.synchronize()
-					record.instance.Parent = nil
-					record.lod.Parent = record.parent
-					record.visible = false
-					task.desynchronize()
-				end
+				task.synchronize()
+					if mag < record.cullDistance and not record.visible then
+						record.instance.Parent = record.parent
+						record.lod.Parent = nil
+						record.visible = true
+						continue
+					end
+					if mag >= record.cullDistance and record.visible then
+						record.instance.Parent = nil
+						record.lod.Parent = record.parent
+						record.visible = false
+					end
+				task.desynchronize()
 				counter += 1
 				if counter > 50 then
 					wait()

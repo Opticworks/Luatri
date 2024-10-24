@@ -3,6 +3,7 @@ local particles = {}
 local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):WaitForChild("services"))
 local cfg = require(svc.replicatedStorage.luatri_config)
 local msg = require(svc.replicatedStorage.output)
+local state = require(svc.replicatedStorage.states)
 
 local particleEmitters = {}
 local emitterLookup = {}
@@ -68,7 +69,7 @@ function particles.updateParticleEmitters()
 		for _, data in pairs(particleEmitters) do
 			local particleEmitter = data.emitter
 			local basePart = particleEmitter.Parent
-			local distance = (basePart.CFrame.Position - workspace.CurrentCamera.CFrame.Position).Magnitude
+			local distance = (basePart.CFrame.Position - state.camPos).Magnitude
 			particleEmitter.Enabled = distance < cfg.PARTICLE_CULLING_RANGE
 		end
 	else

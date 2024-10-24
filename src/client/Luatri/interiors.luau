@@ -4,6 +4,7 @@ local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):
 local cfg = require(svc.replicatedStorage.luatri_config)
 local msg = require(svc.replicatedStorage.output)
 local err = require(svc.replicatedStorage.errors)
+local state = require(svc.replicatedStorage.states)
 
 if not workspace:WaitForChild("Interiors", 5) then
 	msg.throw(err[3])
@@ -68,7 +69,7 @@ function interior.setup()
 end
 
 function interior.isCameraInRegion(minPos, maxPos) -- todo: get rid of this crap
-	local camPos = workspace.CurrentCamera.CFrame.Position
+	local camPos = state.camPos
 	return camPos.X >= minPos.X
 		and camPos.X <= maxPos.X
 		and camPos.Y >= minPos.Y
