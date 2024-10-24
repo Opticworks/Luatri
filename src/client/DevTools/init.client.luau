@@ -4,10 +4,11 @@ until _G.convertedGUILoaded
 
 local DEV_MODE = false
 
-local players = game:GetService("Players")
-local userInputService = game:GetService("UserInputService")
-local runService = game:GetService("RunService")
-local player = players.LocalPlayer
+local svc = require(game.ReplicatedStorage.Shared.services)
+local tsi = require(game.ReplicatedStorage.Shared.tweeninfos)
+
+
+local player = svc.player.LocalPlayer
 
 local dGUI = player.PlayerGui:WaitForChild("DevUI")
 
@@ -15,15 +16,9 @@ local outputframe = dGUI.ScreenSizeFrame.Output
 local outputSample = outputframe.OutputSample
 outputSample.Parent = nil
 
-local tsi = {
-	expo1out = TweenInfo.new(1, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out),
-	expo02out = TweenInfo.new(0.2, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out),
-	expo05out = TweenInfo.new(0.5, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out),
-	back05out = TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
-}
 
 function tween(inst, tweeninfo, propTable)
-	game:GetService("TweenService"):Create(inst, tweeninfo, propTable):Play() -- dont ask.
+	svc.tween:Create(inst, tweeninfo, propTable):Play() -- dont ask.
 end
 
 function _G.out(message: string, timeout: number, type: string)
@@ -65,8 +60,8 @@ function devmode(state: boolean)
 	end
 end
 
-if runService:IsStudio() then -- TODO: figure out a way for people to easily put themselves in a devtable or something like that
-	userInputService.InputBegan:Connect(function(key)
+if svc.run:IsStudio() then -- TODO: figure out a way for people to easily put themselves in a devtable or something like that
+	svc.userInput.InputBegan:Connect(function(key)
 		if key.KeyCode == Enum.KeyCode.RightControl then
 			devmode(not DEV_MODE)
 		end

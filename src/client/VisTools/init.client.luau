@@ -1,5 +1,7 @@
 --!nocheck
 
+local svc = require(game.ReplicatedStorage.Shared.services)
+
 -- TODO: this all needs a huge rewrite.
 
 _G.VisTools_InteriorCulling = true
@@ -15,9 +17,6 @@ _G.VisTools_DistanceFading_output = true
 repeat
 	task.wait()
 until _G.GUIControllerLoaded
-
-local runService = game:GetService("RunService")
-local CollectionService = game:GetService("CollectionService")
 
 -- Configuration
 
@@ -164,7 +163,7 @@ local function updateCulling()
 	end
 end
 
-runService.RenderStepped:Connect(function()
+svc.run.RenderStepped:Connect(function()
 	if _G.VisTools_InteriorCulling ~= cullingEnabled then
 		cullingEnabled = _G.VisTools_InteriorCulling
 		if not cullingEnabled then
@@ -233,16 +232,16 @@ function AddDetail(instance)
 end
 
 function Setup()
-	CollectionService:GetInstanceAddedSignal("Detail_Small"):Connect(function(instance)
+	svc.collection:GetInstanceAddedSignal("Detail_Small"):Connect(function(instance)
 		AddDetail(instance)
 	end)
-	for _, instance in CollectionService:GetTagged("Detail_Small") do
+	for _, instance in svc.collection:GetTagged("Detail_Small") do
 		AddDetail(instance)
 	end
 end
 Setup()
 
-runService.Heartbeat:Connect(function()
+svc.collection.Heartbeat:Connect(function()
 	local pos = camera.CFrame.Position
 	local cellSize = 4
 	local cell = pos // cellSize
