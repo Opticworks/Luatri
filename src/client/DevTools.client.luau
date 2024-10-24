@@ -79,12 +79,12 @@ local dtShown = true
 
 local dtFrame = dGUI.ScreenSizeFrame.Devtools
 local dtContainer = dtFrame.Container
-local dtLeftScrollframe = dtContainer.leftScroller
-local dtRightScrollframe = dtContainer.rightScroller
+local left = dtContainer.leftScroller
+local right = dtContainer.rightScroller
 
-local dtToggleButtonTemplate = dtLeftScrollframe.toggleButtonContainer
-local dtMomentaryButtonTemplate = dtLeftScrollframe.momentaryButtonContainer
-local dtDividerTemplate = dtLeftScrollframe.CatDivider
+local dtToggleButtonTemplate = left.toggleButtonContainer
+local dtMomentaryButtonTemplate = left.momentaryButtonContainer
+local dtDividerTemplate = left.CatDivider
 local dtCloseButton = dtFrame.Titlebar.Close
 local dtPopoutButton = dGUI.ScreenSizeFrame.DevtoolsButton
 
@@ -230,10 +230,10 @@ function toggleDevtoolsVisibility()
 		tween(dtFrame, tsi.expo05out, { Size = UDim2.fromScale(0.59, 0.59), GroupTransparency = 1 })
 		tween(dtFrame.UIStroke, tsi.expo02out, { Transparency = 1 })
 	end
-	dtLeftScrollframe.Visible = dtShown
-	dtRightScrollframe.Visible = dtShown
+	left.Visible = dtShown
+	right.Visible = dtShown
 	dtCloseButton.Visible = dtShown
-	dtRightScrollframe.Visible = dtShown
+	right.Visible = dtShown
 end
 
 dtPopoutButton.MouseEnter:Connect(function() -- wtf is this
@@ -273,47 +273,47 @@ end)
 
 -- YOU CAN APPEND YOUR FUNCTIONS HERE AS YOU WISH
 
-dtDivider("VISTOOLS", dtLeftScrollframe)
+dtDivider("VISTOOLS", left)
 
-dtToggleButton("Particle Culling", "", _G.VisTools_ParticleCulling, dtLeftScrollframe, function()
+dtToggleButton("Particle Culling", "", _G.VisTools_ParticleCulling, left, function()
 	_G.VisTools_ParticleCulling = not _G.VisTools_ParticleCulling
 end)
-dtToggleButton("Interior Culling", "", _G.VisTools_InteriorCulling, dtLeftScrollframe, function()
+dtToggleButton("Interior Culling", "", _G.VisTools_InteriorCulling, left, function()
 	_G.VisTools_InteriorCulling = not _G.VisTools_InteriorCulling
 end)
 
-dtDivider("DEBUG OUTPUTS", dtLeftScrollframe)
+dtDivider("DEBUG OUTPUTS", left)
 
-dtToggleButton("VisTools particle culling", "", _G.VisTools_ParticleCulling_output, dtLeftScrollframe, function()
+dtToggleButton("VisTools particle culling", "", _G.VisTools_ParticleCulling_output, left, function()
 	_G.VisTools_ParticleCulling_output = not _G.VisTools_ParticleCulling_output
 end)
-dtToggleButton("VisTools interior culling", "", _G.VisTools_InteriorCulling_output, dtLeftScrollframe, function()
+dtToggleButton("VisTools interior culling", "", _G.VisTools_InteriorCulling_output, left, function()
 	_G.VisTools_InteriorCulling_output = not _G.VisTools_InteriorCulling_output
 end)
 dtToggleButton(
 	"VisTools verbose interior culling",
 	"",
 	_G.VisTools_InteriorCulling_verboseOutput,
-	dtLeftScrollframe,
+	left,
 	function()
 		_G.VisTools_InteriorCulling_verboseOutput = not _G.VisTools_InteriorCulling_verboseOutput
 	end
 )
 
-dtDivider("SAMPLE BUTTONS", dtRightScrollframe)
-dtMomentaryButton("Hi!", "Add your own buttons in the DevTools script! :)", dtRightScrollframe, function()
+dtDivider("SAMPLE BUTTONS", right)
+dtMomentaryButton("Hi!", "Add your own buttons in the DevTools script! :)", right, function()
 	print("meow")
 end)
-dtDivider("TEST OUTPUTS", dtRightScrollframe)
+dtDivider("TEST OUTPUTS", right)
 
-dtMomentaryButton("Normal output","A normal level output",dtRightScrollframe,function()
+dtMomentaryButton("Normal output","A normal level output",right,function()
 	_G.out("Hello! This is a test output! " .. math.random(1,2000),5,"output")
 end)
 
-dtMomentaryButton("Warn output","A warning level output",dtRightScrollframe,function()
+dtMomentaryButton("Warn output","A warning level output",right,function()
 	_G.out("Hello! This is a test warn! " .. math.random(1,2000),5,"warn")
 end)
-dtMomentaryButton("Error output","A danger level output",dtRightScrollframe,function()
+dtMomentaryButton("Error output","A danger level output",right,function()
 	_G.out("Dangerous operation was caught and the program must now shut down.",20,"error")
 end)
 
