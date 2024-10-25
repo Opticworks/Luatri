@@ -14,5 +14,6 @@ cfg.MAX_FRAMETIME = 0.5 -- * 100 milliseconds
 
 cfg.PARTICLE_CULLING_RANGE = 300
 cfg.TREE_IMPOSTOR_RANGE = 500
+cfg.DISTANCE_FADING_RANGE = 200
 
 return cfg

@@ -3,17 +3,17 @@ local cfg = require(svc.replicatedStorage.luatri_config)
 local msg = require(svc.replicatedStorage.output)
 local wrn = require(svc.replicatedStorage.warns)
 
-local tree = {}
+local fader = {}
 
 local details = {}
 local lastCell = nil
 local pendingUpdate = true
 local updating = false
 
-function tree.AddDetail(instance)
+function fader.AddDetail(instance)
 	task.spawn(function()
 		local record = {}
-		record.cullDistance = cfg.TREE_IMPOSTOR_RANGE
+		record.cullDistance = cfg.DISTANCE_FADING_RANGE
 		record.instance = instance
 		record.primaryPart = instance
 		record.visible = true
@@ -44,7 +44,6 @@ function tree.AddDetail(instance)
 			msg.throw(wrn[4], "warn")
 			return
 		end
-		record.lod = instance.parent.parent:WaitForChild("LOD", math.huge)
 		local dist = record.instance:GetAttribute("distance")
 		if dist ~= nil then
 			record.cullDistance = dist
@@ -53,18 +52,18 @@ function tree.AddDetail(instance)
 	end)
 end
 
-function tree.setup()
+function fader.setup()
 	task.synchronize()
-	svc.collection:GetInstanceAddedSignal("Tree"):Connect(function(instance)
-		tree.AddDetail(instance)
+	svc.collection:GetInstanceAddedSignal("Detail_Small"):Connect(function(instance)
+		fader.AddDetail(instance)
 	end)
-	for _, instance in svc.collection:GetTagged("Tree") do
-		tree.AddDetail(instance)
+	for _, instance in svc.collection:GetTagged("Detail_Small") do
+		fader.AddDetail(instance)
 	end
 	task.desynchronize()
 end
 
-function tree.onHeartbeat()
+function fader.onHeartbeat()
 	local cellSize = 4
 	local cell = workspace.CurrentCamera.CFrame.Position // cellSize
 	if cell ~= lastCell then
@@ -85,14 +84,14 @@ function tree.onHeartbeat()
 				end
 					if mag < record.cullDistance and not record.visible then
 						record.instance.Parent = record.parent
-						record.lod.Parent = nil
 						record.visible = true
+                        print("record is now visible")
 						continue
 					end
 					if mag >= record.cullDistance and record.visible then
 						record.instance.Parent = nil
-						record.lod.Parent = record.parent
 						record.visible = false
+                        print("record is now invisible")
 					end
 				task.desynchronize()
 				counter += 1
@@ -105,4 +104,4 @@ function tree.onHeartbeat()
 		end)
 	end
 end
-return tree
+return fader

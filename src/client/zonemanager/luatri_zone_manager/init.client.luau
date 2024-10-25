@@ -3,4 +3,4 @@ local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):
 
 task.synchronize()
 
-svc.run.Heartbeat:Connect(zones.onHeartbeat)
+svc.run.Heartbeat:ConnectParallel(zones.onHeartbeat)

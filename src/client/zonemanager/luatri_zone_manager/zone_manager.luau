@@ -76,6 +76,7 @@ function ZoneChanged()
 end
 
 function IsWithinZone(position, cf, size)
+	print("player is within zone")
 	-- Convert the global position to local position relative to the bounding box's CFrame
 	local localPos = cf:PointToObjectSpace(position)
 
@@ -90,8 +91,7 @@ end
 
 function zonemanager.onHeartbeat()
 
-	local player = game.Players.LocalPlayer
-	
+	local player = svc.players.LocalPlayer
 	local character = player.Character
 	
 	if character == nil or character.PrimaryPart == nil then
