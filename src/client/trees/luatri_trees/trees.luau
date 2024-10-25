@@ -80,6 +80,9 @@ function tree.onHeartbeat()
 				local vec = record.primaryPart.Position - workspace.CurrentCamera.CFrame.Position
 				local mag = vec.Magnitude
 				task.synchronize()
+				if svc.run.Heartbeat:Wait() > cfg.MAX_FRAMETIME then
+					task.wait() 
+				end
 					if mag < record.cullDistance and not record.visible then
 						record.instance.Parent = record.parent
 						record.lod.Parent = nil

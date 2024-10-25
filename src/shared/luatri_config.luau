@@ -10,6 +10,8 @@ cfg.ParticleCulling_output = false
 cfg.DistanceFading = true
 cfg.DistanceFading_output = true
 
+cfg.MAX_FRAMETIME = 0.3 -- * 100 milliseconds
+
 cfg.PARTICLE_CULLING_RANGE = 300
 cfg.TREE_IMPOSTOR_RANGE = 500
 
