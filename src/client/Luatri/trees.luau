@@ -18,6 +18,7 @@ function tree.AddDetail(instance)
 		record.instance = instance
 		record.primaryPart = instance
 		record.visible = true
+		record.LODvisible = false
 		record.parent = instance.Parent
 		if instance:IsA("Folder") then
 			while true do
@@ -85,13 +86,13 @@ function tree.onHeartbeat()
 					if mag < record.cullDistance and not record.visible then
 						record.instance.Parent = record.parent
 						record.lod.Parent = nil
-						record.visible = true
+						record.visible, record.LODvisible = true, false
 						continue
 					end
 					if mag >= record.cullDistance and record.visible then
 						record.instance.Parent = nil
 						record.lod.Parent = record.parent
-						record.visible = false
+						record.visible, record.LODvisible = false, true
 					end
 				task.desynchronize()
 				counter += 1
