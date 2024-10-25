@@ -1,5 +1,4 @@
 local DEV_MODE = false
-task.synchronize()
 local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):WaitForChild("services"))
 local tsi = require(svc.replicatedStorage.tweeninfos)
 local msg = require(svc.replicatedStorage.output)
