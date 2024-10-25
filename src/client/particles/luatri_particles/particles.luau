@@ -70,11 +70,15 @@ function particles.updateParticleEmitters()
 			local particleEmitter = data.emitter
 			local basePart = particleEmitter.Parent
 			local distance = (basePart.CFrame.Position - state.camPos).Magnitude
+			task.synchronize()
 			particleEmitter.Enabled = distance < cfg.PARTICLE_CULLING_RANGE
+			task.desynchronize()
 		end
 	else
 		for _, data in pairs(particleEmitters) do
+			task.synchronize()
 			data.emitter.Enabled = data.initialEnabled
+			task.desynchronize()
 		end
 	end
 end
