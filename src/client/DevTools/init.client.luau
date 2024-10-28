@@ -10,14 +10,7 @@ local player = svc.players.LocalPlayer
 local dGUI = player.PlayerGui:WaitForChild("DevUI")
 
 local outputframe = dGUI.ScreenSizeFrame.Output
---[[
-if not states.convertedGUILoaded then
-	print("waiting waiting waiting...")
-	states._convertedGUILoadedBindableEvent:Wait()
-	print("waited enough...")
 
-end
-]]
 function tween(inst, tweeninfo, propTable)
 	svc.tween:Create(inst, tweeninfo, propTable):Play() -- dont ask.
 end
@@ -281,6 +274,5 @@ dtMomentaryButton("Error output", "A danger level output", right, function()
 end)
 
 toggleDevtoolsVisibility()
-print("controller loaded")
 states.GUIControllerLoaded = true
 states._GUIControllerLoadedBindable:Fire()
