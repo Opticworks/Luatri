@@ -31,8 +31,8 @@ lang.NormalOutputTooltip = "A normal level output"
 lang.WarnOutputTitle = "Warn Output"
 lang.WarnOutputTooltip = "A warning level output"
 
-lang.WarnOutputTitle = "Error Output"
-lang.WarnOutputTooltip = "A danger level output"
+lang.ErrorOutputTitle = "Error Output"
+lang.ErrorOutputTooltip = "A danger level output"
 
 
 

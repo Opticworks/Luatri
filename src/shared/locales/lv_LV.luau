@@ -31,8 +31,8 @@ lang.NormalOutputTooltip = "Normāla līmeņa izvade"
 lang.WarnOutputTitle = "Brīdinājuma izvade"
 lang.WarnOutputTooltip = "Brīdinājuma līmeņa izvade"
 
-lang.WarnOutputTitle = "Kļūdu izvade"
-lang.WarnOutputTooltip = "Bīstama līmeņa izvade"
+lang.ErrorOutputTitle = "Kļūdu izvade"
+lang.ErrorOutputTooltip = "Bīstama līmeņa izvade"
 
 
 

@@ -5,4 +5,3 @@ trees.setup()
 
 task.synchronize()
 svc.run.Heartbeat:ConnectParallel(trees.onHeartbeat)
-print("connected trees")

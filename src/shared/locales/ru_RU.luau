@@ -31,8 +31,8 @@ lang.NormalOutputTooltip = "Выход нормального уровня"
 lang.WarnOutputTitle = "Выход предупреждения"
 lang.WarnOutputTooltip = "Выходной уровень предупреждения"
 
-lang.WarnOutputTitle = "Ошибка вывода"
-lang.WarnOutputTooltip = "Выходной уровень ошибки"
+lang.ErrorOutputTitle = "Ошибка вывода"
+lang.ErrorOutputTooltip = "Выходной уровень ошибки"
 
 
 

@@ -80,18 +80,16 @@ function fader.onHeartbeat()
 				local mag = vec.Magnitude
 				task.synchronize()
 				if svc.run.Heartbeat:Wait() > cfg.MAX_FRAMETIME then
-					task.wait() 
+					task.wait()
 				end
 					if mag < record.cullDistance and not record.visible then
 						record.instance.Parent = record.parent
 						record.visible = true
-                        print("record is now visible")
 						continue
 					end
 					if mag >= record.cullDistance and record.visible then
 						record.instance.Parent = nil
 						record.visible = false
-                        print("record is now invisible")
 					end
 				task.desynchronize()
 				counter += 1

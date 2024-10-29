@@ -1,5 +1,7 @@
 local DEV_MODE = false
+
 local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):WaitForChild("services"))
+local txt = require(svc.replicatedStorage.locales.en_US)
 local tsi = require(svc.replicatedStorage.tweeninfos)
 local msg = require(svc.replicatedStorage.output)
 local cfg = require(svc.replicatedStorage.luatri_config)
@@ -45,6 +47,9 @@ local dtMomentaryButtonTemplate = left.momentaryButtonContainer
 local dtDividerTemplate = left.CatDivider
 local dtCloseButton = dtFrame.Titlebar.Close
 local dtPopoutButton = dGUI.ScreenSizeFrame.DevtoolsButton
+
+
+
 
 dtToggleButtonTemplate.Parent = nil
 dtMomentaryButtonTemplate.Parent = nil
@@ -231,42 +236,42 @@ end)
 
 -- YOU CAN APPEND YOUR FUNCTIONS HERE AS YOU WISH
 
-dtDivider("LUATRI", left)
+dtDivider(txt.Luatri, left)
 
-dtToggleButton("Particle Culling", "", cfg.ParticleCulling, left, function()
+dtToggleButton(txt.ParticleCulling, "", cfg.ParticleCulling, left, function()
 	cfg.ParticleCulling = not cfg.ParticleCulling
 end)
-dtToggleButton("Interior Culling", "", cfg.InteriorCulling, left, function()
+dtToggleButton(txt.InteriorCulling, "", cfg.InteriorCulling, left, function()
 	cfg.InteriorCulling = not cfg.InteriorCulling
 end)
 
-dtDivider("DEBUG OUTPUTS", left)
+dtDivider(txt.DebugOutputs, left)
 
-dtToggleButton("Luatri particle culling", "", cfg.ParticleCulling_output, left, function()
+dtToggleButton(txt.OutputLuatriParticles, "", cfg.ParticleCulling_output, left, function()
 	cfg.ParticleCulling_output = not cfg.ParticleCulling_output
 end)
-dtToggleButton("Luatri interior culling", "", cfg.InteriorCulling_output, left, function()
+dtToggleButton(txt.OutputLuatriInterior, "", cfg.InteriorCulling_output, left, function()
 	cfg.InteriorCulling_output = not cfg.InteriorCulling_output
 end)
-dtToggleButton("Luatri verbose interior culling", "", cfg.InteriorCulling_verboseOutput, left, function()
+dtToggleButton(txt.OutputLuatriInteriorVerbose, "", cfg.InteriorCulling_verboseOutput, left, function()
 	cfg.InteriorCulling_verboseOutput = not cfg.InteriorCulling_verboseOutput
 end)
 
-dtDivider("SAMPLE BUTTONS", right)
-dtMomentaryButton("Hi!", "Add your own buttons in the DevTools script! :)", right, function()
+dtDivider(txt.SampleButtons, right)
+dtMomentaryButton(txt.SampleButtonTitle, txt.SampleButtonTooltip, right, function()
 	msg.out("meow",5,"output",outputframe)
 end)
-dtDivider("TEST OUTPUTS", right)
+dtDivider(txt.TestOutputs, right)
 
-dtMomentaryButton("Normal output", "A normal level output", right, function()
+dtMomentaryButton(txt.NormalOutputTitle,txt.NormalOutputTooltip, right, function()
 	msg.out("Hello! This is a test output! " .. math.random(1, 2000), 5, "output", outputframe)
 end)
 
-dtMomentaryButton("Warn output", "A warning level output", right, function()
+dtMomentaryButton(txt.WarnOutputTitle, txt.WarnOutputTooltip, right, function()
 	msg.throw(1, "warn", outputframe)
 	msg.throw(2, "warn", outputframe)
 end)
-dtMomentaryButton("Error output", "A danger level output", right, function()
+dtMomentaryButton(txt.ErrorOutputTitle, txt.ErrorOutputTooltip, right, function()
 	msg.throw(1, "error", outputframe)
 	msg.throw(2, "error", outputframe)
 	msg.throw(3, "error", outputframe)
