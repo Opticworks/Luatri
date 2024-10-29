@@ -28,7 +28,6 @@ function fader.AddDetail(instance)
 				end
 			end
 		end
-
 		if instance:IsA("Model") then
 			while true do
 				record.primaryPart = instance.PrimaryPart or instance:FindFirstChildWhichIsA("BasePart", true)
@@ -39,7 +38,6 @@ function fader.AddDetail(instance)
 				end
 			end
 		end
-
 		if record.primaryPart == nil then
 			msg.throw(wrn[4], "warn")
 			return
@@ -78,9 +76,8 @@ function fader.onHeartbeat()
 			for _, record in details do
 				local vec = record.primaryPart.Position - workspace.CurrentCamera.CFrame.Position
 				local mag = vec.Magnitude
-				task.synchronize()
-				if svc.run.Heartbeat:Wait() > cfg.MAX_FRAMETIME then
-					task.wait()
+				if cfg.SERIAL_MODE then
+					task.synchronize()
 				end
 					if mag < record.cullDistance and not record.visible then
 						record.instance.Parent = record.parent
@@ -91,7 +88,9 @@ function fader.onHeartbeat()
 						record.instance.Parent = nil
 						record.visible = false
 					end
-				task.desynchronize()
+				if not cfg.SERIAL_MODE then
+					task.desynchronize()
+				end
 				counter += 1
 				if counter > 50 then
 					task.wait()

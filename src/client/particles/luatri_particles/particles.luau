@@ -66,18 +66,20 @@ end
 
 function particles.updateParticleEmitters()
 	if cfg.ParticleCulling then
+	if cfg.SERIAL_MODE then
+		task.synchronize()
+	end
 		for _, data in pairs(particleEmitters) do
 			local particleEmitter = data.emitter
 			local basePart = particleEmitter.Parent
 			local distance = (basePart.CFrame.Position - state.camPos).Magnitude
-			task.synchronize()
 			particleEmitter.Enabled = distance < cfg.PARTICLE_CULLING_RANGE
-			task.desynchronize()
 		end
 	else
 		for _, data in pairs(particleEmitters) do
-			task.synchronize()
 			data.emitter.Enabled = data.initialEnabled
+		end
+		if not cfg.SERIAL_MODE then
 			task.desynchronize()
 		end
 	end
