@@ -2,6 +2,7 @@ local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):
 local cfg = require(svc.replicatedStorage.luatri_config)
 local msg = require(svc.replicatedStorage.output)
 local wrn = require(svc.replicatedStorage.warns)
+local obj = require(svc.replicatedStorage.objectfuncs)
 
 local fader = {}
 
@@ -61,6 +62,8 @@ function fader.setup()
 	task.desynchronize()
 end
 
+
+
 function fader.onHeartbeat()
 	local cellSize = 4
 	local cell = workspace.CurrentCamera.CFrame.Position // cellSize
@@ -76,17 +79,25 @@ function fader.onHeartbeat()
 			for _, record in details do
 				local vec = record.primaryPart.Position - workspace.CurrentCamera.CFrame.Position
 				local mag = vec.Magnitude
-				if cfg.SERIAL_MODE then
+				if not cfg.SERIAL_MODE then
 					task.synchronize()
 				end
 					if mag < record.cullDistance and not record.visible then
-						record.instance.Parent = record.parent
-						record.visible = true
+						coroutine.wrap(function()
+							obj.tweenModelTransparency(record.instance, 0)
+							task.wait(cfg.DISTANCE_FADING_TIME)
+							record.instance.Parent = record.parent
+							record.visible = true
+						end)()
 						continue
 					end
 					if mag >= record.cullDistance and record.visible then
-						record.instance.Parent = nil
-						record.visible = false
+						coroutine.wrap(function()
+							obj.tweenModelTransparency(record.instance, 1)
+							task.wait(cfg.DISTANCE_FADING_TIME)
+							record.instance.Parent = nil
+							record.visible = false
+						end)()
 					end
 				if not cfg.SERIAL_MODE then
 					task.desynchronize()
