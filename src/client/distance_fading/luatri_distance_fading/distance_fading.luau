@@ -79,6 +79,7 @@ function fader.onHeartbeat()
 			for _, record in details do
 				local vec = record.primaryPart.Position - workspace.CurrentCamera.CFrame.Position
 				local mag = vec.Magnitude
+				debug.profilebegin("Luatri_DistanceFading_Synced")
 				if not cfg.SERIAL_MODE then
 					task.synchronize()
 				end
@@ -102,6 +103,7 @@ function fader.onHeartbeat()
 				if not cfg.SERIAL_MODE then
 					task.desynchronize()
 				end
+				debug.profileend()
 				counter += 1
 				if counter > 50 then
 					task.wait()
