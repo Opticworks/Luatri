@@ -3,7 +3,6 @@ local interior = {}
 local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):WaitForChild("services"))
 local cfg = require(svc.replicatedStorage.luatri_config)
 local msg = require(svc.replicatedStorage.output)
-local err = require(svc.replicatedStorage.errors)
 local state = require(svc.replicatedStorage.states)
 
 local interiorFolder = workspace:WaitForChild("Interiors",math.huge)
