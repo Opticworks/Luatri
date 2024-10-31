@@ -6,10 +6,7 @@ local msg = require(svc.replicatedStorage.output)
 local err = require(svc.replicatedStorage.errors)
 local state = require(svc.replicatedStorage.states)
 
-if not workspace:WaitForChild("Interiors", 5) then
-	msg.throw(err[3])
-end
-local interiorFolder = workspace:WaitForChild("Interiors") -- Find another way to do this; this will yield the rest of the script if not found!
+local interiorFolder = workspace:WaitForChild("Interiors",math.huge)
 
 local cullRegions = {}
 local initialTransparencyMap = {}
