@@ -62,9 +62,8 @@ function fader.setup()
 	task.desynchronize()
 end
 
-
-
 function fader.onHeartbeat()
+	debug.profilebegin("distance_fading.fader.onHeartbeat")
 	local cellSize = 4
 	local cell = workspace.CurrentCamera.CFrame.Position // cellSize
 	if cell ~= lastCell then
@@ -79,16 +78,15 @@ function fader.onHeartbeat()
 			for _, record in details do
 				local vec = record.primaryPart.Position - workspace.CurrentCamera.CFrame.Position
 				local mag = vec.Magnitude
-				debug.profilebegin("Luatri_DistanceFading_Synced")
 				if not cfg.SERIAL_MODE then
 					task.synchronize()
 				end
 					if mag < record.cullDistance and not record.visible then
 						coroutine.wrap(function()
-							obj.tweenModelTransparency(record.instance, 0)
-							task.wait(cfg.DISTANCE_FADING_TIME)
 							record.instance.Parent = record.parent
 							record.visible = true
+							obj.tweenModelTransparency(record.instance, 0)
+							task.wait(cfg.DISTANCE_FADING_TIME)
 						end)()
 						continue
 					end
@@ -103,7 +101,6 @@ function fader.onHeartbeat()
 				if not cfg.SERIAL_MODE then
 					task.desynchronize()
 				end
-				debug.profileend()
 				counter += 1
 				if counter > 50 then
 					task.wait()
@@ -113,5 +110,6 @@ function fader.onHeartbeat()
 			updating = false
 		end)
 	end
+	debug.profileend()
 end
 return fader

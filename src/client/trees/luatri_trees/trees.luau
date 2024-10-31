@@ -65,6 +65,7 @@ function tree.setup()
 end
 
 function tree.onHeartbeat()
+	debug.profilebegin("trees.onHeartbeat")
 	local cellSize = 4
 	local cell = workspace.CurrentCamera.CFrame.Position // cellSize
 	if cell ~= lastCell then
@@ -104,5 +105,6 @@ function tree.onHeartbeat()
 			updating = false
 		end)
 	end
+	debug.profileend()
 end
 return tree

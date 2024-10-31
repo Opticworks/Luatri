@@ -47,6 +47,7 @@ function particles.handleNewDescendant(descendant)
 end
 
 function particles.cleanUpEmitters()
+	debug.profilebegin("particles.cleanUpEmitters")
 	for i = #particleEmitters, 1, -1 do
 		local data = particleEmitters[i]
 		if data.emitter == nil or data.emitter.Parent == nil then
@@ -62,13 +63,15 @@ function particles.cleanUpEmitters()
 			particles.removeEmitter(data.emitter)
 		end
 	end
+	debug.profileend()
 end
 
 function particles.updateParticleEmitters()
 	if cfg.ParticleCulling then
-	if cfg.SERIAL_MODE then
-		task.synchronize()
-	end
+	debug.profilebegin("particles.updateParticleEmitters")
+		if not cfg.SERIAL_MODE then
+			task.synchronize()
+		end
 		for _, data in pairs(particleEmitters) do
 			local particleEmitter = data.emitter
 			local basePart = particleEmitter.Parent
@@ -82,6 +85,7 @@ function particles.updateParticleEmitters()
 		if not cfg.SERIAL_MODE then
 			task.desynchronize()
 		end
+	debug.profileend()
 	end
 end
 

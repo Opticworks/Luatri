@@ -17,6 +17,6 @@ cfg.TREE_IMPOSTOR_RANGE = 500
 cfg.DISTANCE_FADING_RANGE = 200
 cfg.DISTANCE_FADING_TIME = 0.25
 
-cfg.SERIAL_MODE = true
+cfg.SERIAL_MODE = false
 
 return cfg
