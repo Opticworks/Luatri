@@ -1,3 +1,4 @@
+--[[
 local particles = require(script.particles)
 local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):WaitForChild("services"))
 local cfg = require(svc.replicatedStorage.luatri_config)
@@ -9,3 +10,4 @@ if cfg.SERIAL_MODE then
 else
     svc.run.Heartbeat:ConnectParallel(particles.onHeartbeat)
 end
+]]
