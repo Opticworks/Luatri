@@ -11,10 +11,18 @@ local lastCell = nil
 local pendingUpdate = true
 local updating = false
 
-function fader.AddDetail(instance)
+function fader.AddDetail(instance,level)
 	task.spawn(function()
 		local record = {}
-		record.cullDistance = cfg.DISTANCE_FADING_RANGE
+		if level == 1 then -- dont care, ill make this better later
+		record.cullDistance = cfg.DISTANCE_FADING_RANGE_SMALL
+		elseif level == 2 then
+		record.cullDistance = cfg.DISTANCE_FADING_RANGE_MEDIUM
+		elseif level == 3 then
+		record.cullDistance = cfg.DISTANCE_FADING_RANGE_LARGE
+		elseif level == 4 then
+		record.cullDistance = cfg.DISTANCE_FADING_RANGE_ULTRA
+		end
 		record.instance = instance
 		record.primaryPart = instance
 		record.visible = true
@@ -54,10 +62,28 @@ end
 function fader.setup()
 	task.synchronize()
 	svc.collection:GetInstanceAddedSignal("Detail_Small"):Connect(function(instance)
-		fader.AddDetail(instance)
+		fader.AddDetail(instance,1)
+	end)
+	svc.collection:GetInstanceAddedSignal("Detail_Medium"):Connect(function(instance)
+		fader.AddDetail(instance,2)
+	end)
+	svc.collection:GetInstanceAddedSignal("Detail_Large"):Connect(function(instance)
+		fader.AddDetail(instance,3)
+	end)
+	svc.collection:GetInstanceAddedSignal("Detail_Ultra"):Connect(function(instance)
+		fader.AddDetail(instance,4)
 	end)
 	for _, instance in svc.collection:GetTagged("Detail_Small") do
-		fader.AddDetail(instance)
+		fader.AddDetail(instance,1)
+	end
+	for _, instance in svc.collection:GetTagged("Detail_Medium") do
+		fader.AddDetail(instance,2)
+	end
+	for _, instance in svc.collection:GetTagged("Detail_Large") do
+		fader.AddDetail(instance,3)
+	end
+	for _, instance in svc.collection:GetTagged("Detail_Ultra") do
+		fader.AddDetail(instance,4)
 	end
 	task.desynchronize()
 end
