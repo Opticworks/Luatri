@@ -1,5 +1,7 @@
 local cfg = {}
 
+cfg.LUATRI_VERSION = "v0.1.0"
+
 cfg.InteriorCulling = true
 cfg.ParticleCulling = true
 cfg.TreeImpostors = true
