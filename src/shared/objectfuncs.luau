@@ -3,9 +3,20 @@ local func = require(svc.replicatedStorage.funcs)
 
 local obj = {}
 
+local compatibleInstance = {
+    "Decal",
+    "BasePart",
+    "MeshPart",
+    "SpecialMesh"
+}
+
 function obj.canSetTransparency(object)
-    local bool = object:IsA("BasePart") or object:IsA("MeshPart") or object:IsA("Decal") or object:IsA("SpecialMesh")
-    return bool
+    for _,goodboy in compatibleInstance do
+        if object:IsA(goodboy) then -- awrf
+            return true
+        end
+    end
+    return false
 end
 
 function obj.setModelTransparency(model, transparency: number)
