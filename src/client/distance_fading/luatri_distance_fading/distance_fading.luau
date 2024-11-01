@@ -14,14 +14,17 @@ local updating = false
 function fader.AddDetail(instance,level)
 	task.spawn(function()
 		local record = {}
-		if level == 1 then -- dont care, ill make this better later
-		record.cullDistance = cfg.DISTANCE_FADING_RANGE_SMALL
-		elseif level == 2 then
-		record.cullDistance = cfg.DISTANCE_FADING_RANGE_MEDIUM
-		elseif level == 3 then
-		record.cullDistance = cfg.DISTANCE_FADING_RANGE_LARGE
-		elseif level == 4 then
-		record.cullDistance = cfg.DISTANCE_FADING_RANGE_ULTRA
+		local cullDistances = {
+			[1] = cfg.DISTANCE_FADING_RANGE_SMALL,
+			[2] = cfg.DISTANCE_FADING_RANGE_MEDIUM,
+			[3] = cfg.DISTANCE_FADING_RANGE_LARGE,
+			[4] = cfg.DISTANCE_FADING_RANGE_ULTRA
+		}
+		record.cullDistance = cullDistances[level] or cfg.DISTANCE_FADING_RANGE_SMALL
+		if obj.canSetTransparency(instance.Parent) then
+			record.originalTransparency = instance.Parent.Transparency
+		else
+			record.originalTransparency = 0
 		end
 		record.instance = instance
 		record.primaryPart = instance
@@ -111,7 +114,7 @@ function fader.onHeartbeat()
 						coroutine.wrap(function()
 							record.instance.Parent = record.parent
 							record.visible = true
-							obj.tweenModelTransparency(record.instance, 0)
+							obj.tweenModelTransparency(record.instance, record.originalTransparency)
 							task.wait(cfg.DISTANCE_FADING_TIME)
 						end)()
 						continue
