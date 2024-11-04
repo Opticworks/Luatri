@@ -1,5 +1,3 @@
---[[
-
 local particles = {}
 
 local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):WaitForChild("services"))
@@ -102,4 +100,3 @@ workspace.DescendantAdded:Connect(particles.handleNewDescendant)
 
 return particles
 
-]]

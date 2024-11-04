@@ -11,6 +11,16 @@ local lastCell = nil
 local pendingUpdate = true
 local updating = false
 
+function collectDescendantTransparencies(thing)
+	local transparencyTable = {}
+	for _, descendant in pairs(thing:GetDescendants()) do
+		if obj.canSetTransparency(descendant) then
+			transparencyTable[descendant] = descendant.Transparency
+		end
+	end
+	return transparencyTable
+end
+
 function fader.AddDetail(instance,level)
 	task.spawn(function()
 		local record = {}
@@ -21,11 +31,15 @@ function fader.AddDetail(instance,level)
 			[4] = cfg.DISTANCE_FADING_RANGE_ULTRA
 		}
 		record.cullDistance = cullDistances[level] or cfg.DISTANCE_FADING_RANGE_SMALL
-		if obj.canSetTransparency(instance.Parent) then
-			record.originalTransparency = instance.Parent.Transparency
+
+		if obj.canSetTransparency(instance) then
+			record.originalTransparency = instance.Transparency
+			record.descendantTransparencies = collectDescendantTransparencies(instance)
 		else
 			record.originalTransparency = 0
+			record.descendantTransparencies = {}
 		end
+
 		record.instance = instance
 		record.primaryPart = instance
 		record.visible = true
@@ -64,29 +78,22 @@ end
 
 function fader.setup()
 	task.synchronize()
-	svc.collection:GetInstanceAddedSignal("Detail_Small"):Connect(function(instance)
-		fader.AddDetail(instance,1)
-	end)
-	svc.collection:GetInstanceAddedSignal("Detail_Medium"):Connect(function(instance)
-		fader.AddDetail(instance,2)
-	end)
-	svc.collection:GetInstanceAddedSignal("Detail_Large"):Connect(function(instance)
-		fader.AddDetail(instance,3)
-	end)
-	svc.collection:GetInstanceAddedSignal("Detail_Ultra"):Connect(function(instance)
-		fader.AddDetail(instance,4)
-	end)
-	for _, instance in svc.collection:GetTagged("Detail_Small") do
-		fader.AddDetail(instance,1)
+	local tags = {
+		["Detail_Small"] = 1,
+		["Detail_Medium"] = 2,
+		["Detail_Large"] = 3,
+		["Detail_Ultra"] = 4,
+	}
+	local function addDetail(instance, detailLevel)
+		fader.AddDetail(instance, detailLevel)
 	end
-	for _, instance in svc.collection:GetTagged("Detail_Medium") do
-		fader.AddDetail(instance,2)
-	end
-	for _, instance in svc.collection:GetTagged("Detail_Large") do
-		fader.AddDetail(instance,3)
-	end
-	for _, instance in svc.collection:GetTagged("Detail_Ultra") do
-		fader.AddDetail(instance,4)
+	for tag, detailLevel in pairs(tags) do
+		svc.collection:GetInstanceAddedSignal(tag):Connect(function(instance)
+			addDetail(instance, detailLevel)
+		end)
+		for _, instance in svc.collection:GetTagged(tag) do
+			addDetail(instance, detailLevel)
+		end
 	end
 	task.desynchronize()
 end
