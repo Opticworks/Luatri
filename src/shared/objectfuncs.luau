@@ -1,5 +1,6 @@
 local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):WaitForChild("services"))
 local func = require(svc.replicatedStorage.funcs)
+local cfg = require(svc.replicatedStorage.luatri_config)
 
 local obj = {}
 
@@ -29,8 +30,8 @@ end
 
 function obj.tweenModelTransparency(model, transparency: number)
     for _, descendant in pairs(model:GetDescendants()) do
-        if obj.canSetTransparency(descendant) then
-            func.tween(descendant, TweenInfo.new(0.25), { Transparency = transparency })
+        if obj.canSetTransparency(descendant) and cfg.DISTANCE_FADING_TWEEN then
+            func.tween(descendant, TweenInfo.new(cfg.DISTANCE_FADING_TIME), { Transparency = transparency })
         end
     end
 end

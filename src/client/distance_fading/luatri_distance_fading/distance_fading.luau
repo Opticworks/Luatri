@@ -121,15 +121,19 @@ function fader.onHeartbeat()
 						coroutine.wrap(function()
 							record.instance.Parent = record.parent
 							record.visible = true
-							obj.tweenModelTransparency(record.instance, record.originalTransparency)
-							task.wait(cfg.DISTANCE_FADING_TIME)
+							if cfg.DISTANCE_FADING_TWEEN then
+								obj.tweenModelTransparency(record.instance, record.originalTransparency)
+								task.wait(cfg.DISTANCE_FADING_TIME)
+							end
 						end)()
 						continue
 					end
 					if mag >= record.cullDistance and record.visible then
 						coroutine.wrap(function()
-							obj.tweenModelTransparency(record.instance, 1)
-							task.wait(cfg.DISTANCE_FADING_TIME)
+							if cfg.DISTANCE_FADING_TWEEN then
+								obj.tweenModelTransparency(record.instance, 1)
+								task.wait(cfg.DISTANCE_FADING_TIME)
+							end
 							record.instance.Parent = nil
 							record.visible = false
 						end)()
