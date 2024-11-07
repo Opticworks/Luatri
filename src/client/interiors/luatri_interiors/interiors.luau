@@ -2,8 +2,8 @@ local interior = {}
 
 local svc = require(game:GetService("ReplicatedStorage"):WaitForChild("Luatri"):WaitForChild("services"))
 local cfg = require(svc.replicatedStorage.luatri_config)
-local msg = require(svc.replicatedStorage.output)
 local state = require(svc.replicatedStorage.states)
+local wrn = require(svc.replicatedStorage.warns)
 
 local interiorFolder = workspace:WaitForChild("Interiors",math.huge)
 
@@ -56,9 +56,9 @@ function interior.setup()
 			})
 		else
 			if folder then
-				msg.throw(1 .. " for " .. tostring(folder), "warn")
+				warn(wrn[1] .. " for " .. tostring(folder))
 			else
-				msg.throw(2, "warn")
+				warn(wrn[2])
 			end
 		end
 	end
