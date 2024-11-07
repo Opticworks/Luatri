@@ -122,6 +122,7 @@ function fader.onHeartbeat()
 							record.instance.Parent = record.parent
 							record.visible = true
 							if cfg.DISTANCE_FADING_TWEEN then
+								if cfg.DISTANCE_FADING_TWEEN then
 								for v,val in record.descendantTransparencies do 
 									print("descendant of something idk")
 									print(v,val)
@@ -131,18 +132,17 @@ function fader.onHeartbeat()
 									print("record instance")
 									print(record.originalTransparency)
 									svc.tween:Create(record.instance, TweenInfo.new(cfg.DISTANCE_FADING_TIME), {Transparency = record.originalTransparency}):Play()
-									task.wait(cfg.DISTANCE_FADING_TIME)
+										task.wait(cfg.DISTANCE_FADING_TIME)
 								end
+							end
 							end
 						end)()
 						continue
 					end
 					if mag >= record.cullDistance and record.visible then
 						coroutine.wrap(function()
-							if cfg.DISTANCE_FADING_TWEEN then
-								obj.tweenModelTransparency(record.instance, 1)
-								task.wait(cfg.DISTANCE_FADING_TIME)
-							end
+							obj.tweenModelTransparency(record.instance, 1)
+							task.wait(cfg.DISTANCE_FADING_TIME)
 							record.instance.Parent = nil
 							record.visible = false
 						end)()
