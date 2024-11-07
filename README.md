@@ -1,7 +1,7 @@
+![luatri_downscaled](https://github.com/user-attachments/assets/813d0288-dffb-41a6-9bae-f434efaa0d72)
+
 > [!CAUTION]
 > Luatri is not ready for production use; it is currently meant for testing purposes only. Proceed with caution!
-
-# Luatri
 
 [![YouTube](http://i.ytimg.com/vi/vnCQPsnyepw/hqdefault.jpg)](https://www.youtube.com/watch?v=vnCQPsnyepw)
 
