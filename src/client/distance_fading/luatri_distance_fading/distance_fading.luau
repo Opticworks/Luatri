@@ -11,6 +11,7 @@ local lastCell = nil
 local pendingUpdate = true
 local updating = false
 
+
 function collectDescendantTransparencies(thing)
 	local transparencyTable = {}
 	for _, descendant in pairs(thing:GetDescendants()) do
@@ -21,17 +22,17 @@ function collectDescendantTransparencies(thing)
 	return transparencyTable
 end
 
+local cullDistances = {
+	[1] = cfg.DISTANCE_FADING_RANGE_SMALL,
+	[2] = cfg.DISTANCE_FADING_RANGE_MEDIUM,
+	[3] = cfg.DISTANCE_FADING_RANGE_LARGE,
+	[4] = cfg.DISTANCE_FADING_RANGE_ULTRA
+}
+
 function fader.AddDetail(instance,level)
 	task.spawn(function()
 		local record = {}
-		local cullDistances = {
-			[1] = cfg.DISTANCE_FADING_RANGE_SMALL,
-			[2] = cfg.DISTANCE_FADING_RANGE_MEDIUM,
-			[3] = cfg.DISTANCE_FADING_RANGE_LARGE,
-			[4] = cfg.DISTANCE_FADING_RANGE_ULTRA
-		}
 		record.cullDistance = cullDistances[level] or cfg.DISTANCE_FADING_RANGE_SMALL
-
 		if obj.canSetTransparency(instance) then
 			record.originalTransparency = instance.Transparency
 			record.descendantTransparencies = collectDescendantTransparencies(instance)
@@ -39,7 +40,6 @@ function fader.AddDetail(instance,level)
 			record.originalTransparency = 0
 			record.descendantTransparencies = {}
 		end
-
 		record.instance = instance
 		record.primaryPart = instance
 		record.visible = true
@@ -122,7 +122,11 @@ function fader.onHeartbeat()
 							record.instance.Parent = record.parent
 							record.visible = true
 							if cfg.DISTANCE_FADING_TWEEN then
-								obj.tweenModelTransparency(record.instance, record.originalTransparency)
+								for v,val in record.descendantTransparencies do 
+									print(v,val)
+									svc.tween:Create(v, TweenInfo.new(cfg.DISTANCE_FADING_TIME), {Transparency = val}):Play()
+								end
+								--svc.tween:Create(record.instance, TweenInfo.new(cfg.DISTANCE_FADING_TIME), {Transparency = record.originalTransparency}):Play()
 								task.wait(cfg.DISTANCE_FADING_TIME)
 							end
 						end)()
