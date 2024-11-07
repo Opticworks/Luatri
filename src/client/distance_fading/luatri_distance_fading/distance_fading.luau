@@ -123,11 +123,16 @@ function fader.onHeartbeat()
 							record.visible = true
 							if cfg.DISTANCE_FADING_TWEEN then
 								for v,val in record.descendantTransparencies do 
+									print("descendant of something idk")
 									print(v,val)
 									svc.tween:Create(v, TweenInfo.new(cfg.DISTANCE_FADING_TIME), {Transparency = val}):Play()
 								end
-								--svc.tween:Create(record.instance, TweenInfo.new(cfg.DISTANCE_FADING_TIME), {Transparency = record.originalTransparency}):Play()
-								task.wait(cfg.DISTANCE_FADING_TIME)
+								if obj.canSetTransparency(record.instance) then
+									print("record instance")
+									print(record.originalTransparency)
+									svc.tween:Create(record.instance, TweenInfo.new(cfg.DISTANCE_FADING_TIME), {Transparency = record.originalTransparency}):Play()
+									task.wait(cfg.DISTANCE_FADING_TIME)
+								end
 							end
 						end)()
 						continue
