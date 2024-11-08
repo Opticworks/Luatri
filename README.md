@@ -1,9 +1,10 @@
 ![luatri_downscaled](https://github.com/user-attachments/assets/813d0288-dffb-41a6-9bae-f434efaa0d72)
 
+Finally, an open-source Roblox render optimizing tool that doesn't break the bank.
+
+
 > [!CAUTION]
 > Luatri is not ready for production use; it is currently meant for testing purposes only. Proceed with caution!
-
-[![YouTube](http://i.ytimg.com/vi/vnCQPsnyepw/hqdefault.jpg)](https://www.youtube.com/watch?v=vnCQPsnyepw)
 
 Luatri is a scene management tool for Roblox. It is largely intended to be a free and open-source alternative to other similar tools on the Roblox market.
 
