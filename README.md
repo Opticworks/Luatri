@@ -8,11 +8,10 @@ Finally, an open-source Roblox render optimizing tool that doesn't break the ban
 
 Luatri is a scene management tool for Roblox. It is largely intended to be a free and open-source alternative to other similar tools on the Roblox market.
 
-With Luatri, you can expect to see:
+What does Luatri have so far?
 
 - Interior culling
-- Particle culling
-- Tree impostors
+- Tree LODs
 - Distance fading
 - Support for 4-stage LODs
 - With its own complementary runtime UI called DevTools
