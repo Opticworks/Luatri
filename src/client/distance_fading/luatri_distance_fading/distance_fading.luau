@@ -11,34 +11,20 @@ local lastCell = nil
 local pendingUpdate = true
 local updating = false
 
-
-function collectDescendantTransparencies(thing)
-	local transparencyTable = {}
-	for _, descendant in pairs(thing:GetDescendants()) do
-		if obj.canSetTransparency(descendant) then
-			transparencyTable[descendant] = descendant.Transparency
-		end
-	end
-	return transparencyTable
-end
-
-local cullDistances = {
-	[1] = cfg.DISTANCE_FADING_RANGE_SMALL,
-	[2] = cfg.DISTANCE_FADING_RANGE_MEDIUM,
-	[3] = cfg.DISTANCE_FADING_RANGE_LARGE,
-	[4] = cfg.DISTANCE_FADING_RANGE_ULTRA
-}
-
 function fader.AddDetail(instance,level)
 	task.spawn(function()
 		local record = {}
+		local cullDistances = {
+			[1] = cfg.DISTANCE_FADING_RANGE_SMALL,
+			[2] = cfg.DISTANCE_FADING_RANGE_MEDIUM,
+			[3] = cfg.DISTANCE_FADING_RANGE_LARGE,
+			[4] = cfg.DISTANCE_FADING_RANGE_ULTRA
+		}
 		record.cullDistance = cullDistances[level] or cfg.DISTANCE_FADING_RANGE_SMALL
-		if obj.canSetTransparency(instance) then
-			record.originalTransparency = instance.Transparency
-			record.descendantTransparencies = collectDescendantTransparencies(instance)
+		if obj.canSetTransparency(instance.Parent) then
+			record.originalTransparency = instance.Parent.Transparency
 		else
 			record.originalTransparency = 0
-			record.descendantTransparencies = {}
 		end
 		record.instance = instance
 		record.primaryPart = instance
@@ -121,21 +107,8 @@ function fader.onHeartbeat()
 						coroutine.wrap(function()
 							record.instance.Parent = record.parent
 							record.visible = true
-							if cfg.DISTANCE_FADING_TWEEN then
-								if cfg.DISTANCE_FADING_TWEEN then
-								for v,val in record.descendantTransparencies do 
-									print("descendant of something idk")
-									print(v,val)
-									svc.tween:Create(v, TweenInfo.new(cfg.DISTANCE_FADING_TIME), {Transparency = val}):Play()
-								end
-								if obj.canSetTransparency(record.instance) then
-									print("record instance")
-									print(record.originalTransparency)
-									svc.tween:Create(record.instance, TweenInfo.new(cfg.DISTANCE_FADING_TIME), {Transparency = record.originalTransparency}):Play()
-										task.wait(cfg.DISTANCE_FADING_TIME)
-								end
-							end
-							end
+							obj.tweenModelTransparency(record.instance, record.originalTransparency)
+							task.wait(cfg.DISTANCE_FADING_TIME)
 						end)()
 						continue
 					end
